@@ -54,7 +54,8 @@
             "node_modules/@expo-google-fonts/poppins/Poppins_900Black.ttf"
           ]
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
