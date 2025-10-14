@@ -8,7 +8,7 @@ export const login = async ({
   return (await api.post("/auth/login/", { username, password })).data;
 };
 
-export const msLogin = async (token: string | null) => {
+export const msLogin = async (token: string | null): Promise<AuthResponse> => {
   return (
     await api.get(`/auth/microsoft/`, {
       headers: {

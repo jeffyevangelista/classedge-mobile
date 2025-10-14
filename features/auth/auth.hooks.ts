@@ -1,8 +1,8 @@
 import useStore from "@/lib/store";
 import { queryClient } from "@/providers/QueryProvider";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { login } from "./auth.apis";
+import { login, msLogin } from "./auth.apis";
 import { AuthResponse, LoginCredentials } from "./auth.types";
 import { refresh } from "./refreshToken";
 
@@ -39,5 +39,20 @@ export const useLogout = () => {
       queryClient.clear();
       router.replace("/(root)");
     },
+  });
+};
+
+export const useMsLogin = (token: string | null) => {
+  const router = useRouter();
+  const { setAcessToken, setRefreshToken } = useStore.getState();
+  return useQuery({
+    queryKey: ["ms-login"],
+    queryFn: async () => {
+      const { access, refresh } = await msLogin(token);
+
+      await Promise.all([setAcessToken(access), setRefreshToken(refresh)]);
+      router.replace("/(root)/(protected)");
+    },
+    enabled: !!token,
   });
 };
