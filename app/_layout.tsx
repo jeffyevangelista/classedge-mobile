@@ -1,3 +1,4 @@
+import RootProvider from "@/providers/RootProvider";
 import { Poppins_100Thin } from "@expo-google-fonts/poppins/100Thin";
 import { Poppins_100Thin_Italic } from "@expo-google-fonts/poppins/100Thin_Italic";
 import { Poppins_200ExtraLight } from "@expo-google-fonts/poppins/200ExtraLight";
@@ -18,7 +19,7 @@ import { Poppins_900Black } from "@expo-google-fonts/poppins/900Black";
 import { Poppins_900Black_Italic } from "@expo-google-fonts/poppins/900Black_Italic";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export default function RootLayout() {
   let [loaded, error] = useFonts({
@@ -52,5 +53,15 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Stack />;
+  return (
+    <RootProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(root)" />
+      </Stack>
+    </RootProvider>
+  );
 }
