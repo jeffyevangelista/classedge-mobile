@@ -1,3 +1,4 @@
+import useStore from "@/lib/store";
 import RootProvider from "@/providers/RootProvider";
 import { Poppins_100Thin } from "@expo-google-fonts/poppins/100Thin";
 import { Poppins_100Thin_Italic } from "@expo-google-fonts/poppins/100Thin_Italic";
@@ -19,9 +20,14 @@ import { Poppins_900Black } from "@expo-google-fonts/poppins/900Black";
 import { Poppins_900Black_Italic } from "@expo-google-fonts/poppins/900Black_Italic";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { SplashScreen, Stack } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const { restoreSession } = useStore();
+  const [sessionRestored, setSessionRestored] = useState(false);
+
   let [loaded, error] = useFonts({
     "Poppins-Thin": Poppins_100Thin,
     "Poppins-ThinItalic": Poppins_100Thin_Italic,
@@ -44,12 +50,16 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded || error) {
+    restoreSession().finally(() => setSessionRestored(true));
+  }, []);
+
+  useEffect(() => {
+    if ((loaded || error) && sessionRestored) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [loaded, error, sessionRestored]);
 
-  if (!loaded && !error) {
+  if ((!loaded && !error) || !sessionRestored) {
     return null;
   }
 

@@ -15,7 +15,7 @@ export const storeASData = async (
 export const getASData = async <T>(key: string): Promise<T | null> => {
   try {
     const value = await AsyncStorage.getItem(key);
-    return value ? (JSON.parse(value) as T) : null;
+    return value ? JSON.parse(value) : null;
   } catch (error) {
     console.log("Error getting data from async storage", error);
     return null;

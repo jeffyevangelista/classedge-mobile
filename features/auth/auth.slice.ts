@@ -40,17 +40,17 @@ const initialState: AuthState = {
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   ...initialState,
   setAcessToken: async (token) => {
-    const { user_id, roles } = jwtDecode<DecodedToken>(token);
+    const { user_id, role } = jwtDecode<DecodedToken>(token);
 
     await Promise.all([
       storeSSData(ACCESS_TOKEN_KEY, token),
       storeASData(
         ASYNC_STORAGE_KEYS.AUTH_USER,
-        JSON.stringify({ id: user_id, roles })
+        JSON.stringify({ id: user_id, role })
       ),
     ]);
 
-    set({ accessToken: token, authUser: { id: user_id, roles } });
+    set({ accessToken: token, authUser: { id: user_id, role } });
   },
   setRefreshToken: async (token) => {
     await storeSSData(REFRESH_TOKEN_KEY, token);
@@ -62,8 +62,6 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       getSSData(REFRESH_TOKEN_KEY),
       getASData<AuthUser | null>(ASYNC_STORAGE_KEYS.AUTH_USER),
     ]);
-
-    console.log({ accessToken, refreshToken, authUser });
 
     set({
       accessToken,

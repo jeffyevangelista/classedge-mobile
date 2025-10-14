@@ -5,7 +5,7 @@ export type LoginCredentials = {
 
 export type AuthUser = {
   id: number;
-  roles: string[];
+  role: string[];
 };
 
 export type AuthResponse = {
@@ -21,5 +21,5 @@ export type DecodedToken = {
   iat: number;
   jti: string;
   user_id: number;
-  roles: string[];
+  role: string[];
 };
