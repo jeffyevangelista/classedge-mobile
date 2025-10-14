@@ -62,12 +62,12 @@ api.interceptors.response.use(
       try {
         const { access: accessToken } = await refresh(refreshToken);
 
-        setAcessToken(accessToken);
+        await setAcessToken(accessToken);
         processQueue(null, accessToken);
         return api(originalRequest);
       } catch (err) {
         processQueue(err, null);
-        clearCredentials();
+        await clearCredentials();
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
