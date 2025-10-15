@@ -68,7 +68,11 @@ const MSAuthButton = () => {
   };
 
   return (
-    <Pressable onPress={handleSignIn} disabled={isLoading}>
+    <Pressable
+      onPress={handleSignIn}
+      style={{ marginHorizontal: "auto", marginVertical: 10 }}
+      disabled={isLoading}
+    >
       <Text>Sign in with Microsoft</Text>
     </Pressable>
   );

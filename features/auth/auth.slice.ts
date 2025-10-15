@@ -77,7 +77,7 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       getASData<AuthUser | null>(ASYNC_STORAGE_KEYS.AUTH_USER),
     ]);
 
-    const isAuthenticated = !!(accessToken && refreshToken);
+    const isAuthenticated = !!(accessToken && refreshToken && authUser);
 
     set({
       accessToken,

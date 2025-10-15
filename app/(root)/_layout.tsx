@@ -12,6 +12,7 @@ export default () => {
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(protected)" />
       </Stack.Protected>
+      <Stack.Screen name="forgot-password" />
     </Stack>
   );
 };

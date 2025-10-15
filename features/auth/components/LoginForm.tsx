@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
 import { useLogin } from "../auth.hooks";
@@ -21,6 +22,9 @@ const LoginForm = () => {
         onChangeText={setUsername}
         style={{ borderWidth: 1, borderColor: "#ccc", padding: 10 }}
       />
+      <Link style={{ marginLeft: "auto" }} href="/(root)/forgot-password">
+        Forgot Password?
+      </Link>
       <TextInput
         placeholder="Password"
         value={password}
