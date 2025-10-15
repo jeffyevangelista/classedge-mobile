@@ -14,6 +14,8 @@ const LoginForm = () => {
     <View style={{ padding: 10 }}>
       {isError && <Text>{error.message}</Text>}
       <TextInput
+        keyboardType="email-address"
+        autoCapitalize="none"
         placeholder="Username"
         value={username}
         onChangeText={setUsername}

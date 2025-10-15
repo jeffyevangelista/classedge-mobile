@@ -48,11 +48,20 @@ export const useMsLogin = (token: string | null) => {
   return useQuery({
     queryKey: ["ms-login"],
     queryFn: async () => {
-      const { access, refresh } = await msLogin(token);
+      const data = await msLogin(token);
 
-      await Promise.all([setAcessToken(access), setRefreshToken(refresh)]);
+      if (data) {
+        await Promise.all([
+          setAcessToken(data.access),
+          setRefreshToken(data.refresh),
+        ]);
+      }
+
       router.replace("/(root)/(protected)");
+
+      return data;
     },
+
     enabled: !!token,
   });
 };

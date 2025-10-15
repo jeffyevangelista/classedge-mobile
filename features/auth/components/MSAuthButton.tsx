@@ -1,7 +1,7 @@
 import { MICROSOFT_CLIENT_ID, MICROSOFT_TENANT_ID } from "@/utils/env";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 import { useMsLogin } from "../auth.hooks";
 
@@ -24,19 +24,11 @@ const MSAuthButton = () => {
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: MICROSOFT_CLIENT_ID,
+      scopes: ["api://183431e3-ef34-43eb-8dbe-c4e4b7da7786/read"],
       redirectUri,
-      scopes: ["user.read"],
     },
     discovery
   );
-
-  const handleSignIn = async () => {
-    try {
-      await promptAsync();
-    } catch (error) {
-      console.error("Error during sign-in:", error);
-    }
-  };
 
   useEffect(() => {
     const getTokenAndUser = async () => {
@@ -66,6 +58,14 @@ const MSAuthButton = () => {
 
     getTokenAndUser();
   }, [response]);
+
+  const handleSignIn = async () => {
+    try {
+      await promptAsync();
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+    }
+  };
 
   return (
     <Pressable onPress={handleSignIn} disabled={isLoading}>

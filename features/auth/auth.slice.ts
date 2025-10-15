@@ -50,11 +50,15 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       ),
     ]);
 
-    set({ accessToken: token, authUser: { id: user_id, role } });
+    set({
+      accessToken: token,
+      authUser: { id: user_id, role },
+      isAuthenticated: true,
+    });
   },
   setRefreshToken: async (token) => {
     await storeSSData(REFRESH_TOKEN_KEY, token);
-    set({ refreshToken: token });
+    set({ refreshToken: token, isAuthenticated: true });
   },
   restoreSession: async () => {
     const [accessToken, refreshToken, authUser] = await Promise.all([
@@ -63,11 +67,13 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       getASData<AuthUser | null>(ASYNC_STORAGE_KEYS.AUTH_USER),
     ]);
 
+    const isAuthenticated = !!(accessToken && refreshToken);
+
     set({
       accessToken,
       refreshToken,
       authUser,
-      isAuthenticated: true,
+      isAuthenticated,
     });
   },
   clearCredentials: async () => {
