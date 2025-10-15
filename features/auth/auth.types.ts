@@ -6,6 +6,8 @@ export type LoginCredentials = {
 export type AuthUser = {
   id: number;
   role: string[];
+  needsPasswordSetup: boolean;
+  needsOnboarding: boolean;
 };
 
 export type AuthResponse = {
@@ -22,4 +24,6 @@ export type DecodedToken = {
   jti: string;
   user_id: number;
   role: string[];
+  needs_password_setup: false;
+  needs_onboarding: false;
 };
