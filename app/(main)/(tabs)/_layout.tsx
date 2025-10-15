@@ -1,7 +1,12 @@
+import LogoutButton from "@/features/auth/components/LogoutButton";
 import { Tabs } from "expo-router";
 
 export default () => (
-  <Tabs>
+  <Tabs
+    screenOptions={{
+      headerRight: () => <LogoutButton />,
+    }}
+  >
     <Tabs.Screen name="index" options={{ title: "Home" }} />
     <Tabs.Screen name="calendar" options={{ title: "Calendar" }} />
     <Tabs.Screen name="subjects" options={{ title: "Subjects" }} />
