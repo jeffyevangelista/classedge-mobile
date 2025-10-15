@@ -17,7 +17,7 @@ export const useLogin = () => {
         setAcessToken(data.access),
         setRefreshToken(data.refresh),
       ]);
-      router.replace("/(main)/(dashboard)");
+      router.replace("/(main)/(tabs)");
     },
   });
 };
@@ -57,7 +57,7 @@ export const useMsLogin = (token: string | null) => {
         ]);
       }
 
-      router.replace("/(main)/(dashboard)");
+      router.replace("/(main)/(tabs)");
 
       return data;
     },

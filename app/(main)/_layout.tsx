@@ -13,12 +13,7 @@ export default () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="(dashboard)"
-        options={{
-          headerTitle: "Dashboard",
-        }}
-      />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 };
