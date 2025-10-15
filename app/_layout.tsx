@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { restoreSession, isAuthenticated } = useStore();
+  const { restoreSession, isAuthenticated, authUser } = useStore();
   const [sessionRestored, setSessionRestored] = useState(false);
 
   let [loaded, error] = useFonts({
@@ -66,10 +66,22 @@ export default function RootLayout() {
   return (
     <RootProvider>
       <Stack>
-        <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Protected
+          guard={
+            !isAuthenticated ||
+            !!authUser?.needsPasswordSetup ||
+            !!authUser?.needsOnboarding
+          }
+        >
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
-        <Stack.Protected guard={isAuthenticated}>
+        <Stack.Protected
+          guard={
+            isAuthenticated &&
+            !authUser?.needsPasswordSetup &&
+            !authUser?.needsOnboarding
+          }
+        >
           <Stack.Screen name="(protected)" />
         </Stack.Protected>
       </Stack>
