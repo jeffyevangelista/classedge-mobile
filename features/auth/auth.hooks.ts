@@ -17,7 +17,7 @@ export const useLogin = () => {
         setAcessToken(data.access),
         setRefreshToken(data.refresh),
       ]);
-      router.replace("/(protected)");
+      router.replace("/(protected)/(dashboard)");
     },
   });
 };
@@ -57,7 +57,7 @@ export const useMsLogin = (token: string | null) => {
         ]);
       }
 
-      router.replace("/(protected)");
+      router.replace("/(protected)/(dashboard)");
 
       return data;
     },
