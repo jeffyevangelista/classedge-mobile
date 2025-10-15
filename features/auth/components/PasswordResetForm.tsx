@@ -39,7 +39,7 @@ const PasswordResetForm = () => {
       <Link href="/forgot-password/reset-success" asChild>
         <Button title="Reset Password" />
       </Link>
-      <Link href="/(root)" asChild>
+      <Link href="/" asChild>
         <Text>Cancel</Text>
       </Link>
     </View>

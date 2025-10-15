@@ -22,7 +22,7 @@ const LoginForm = () => {
         onChangeText={setUsername}
         style={{ borderWidth: 1, borderColor: "#ccc", padding: 10 }}
       />
-      <Link style={{ marginLeft: "auto" }} href="/(root)/forgot-password">
+      <Link style={{ marginLeft: "auto" }} href="/forgot-password">
         Forgot Password?
       </Link>
       <TextInput

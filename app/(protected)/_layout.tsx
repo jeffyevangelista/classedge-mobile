@@ -4,7 +4,7 @@ import { Redirect, Stack } from "expo-router";
 export default () => {
   const { authUser } = useStore();
 
-  if (!authUser) return <Redirect href="/(root)" />;
+  if (!authUser) return <Redirect href="/" />;
 
   return (
     <Stack>

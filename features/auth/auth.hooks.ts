@@ -17,7 +17,7 @@ export const useLogin = () => {
         setAcessToken(data.access),
         setRefreshToken(data.refresh),
       ]);
-      router.replace("/(root)/(protected)");
+      router.replace("/(protected)");
     },
   });
 };
@@ -37,7 +37,7 @@ export const useLogout = () => {
     mutationFn: async () => clearCredentials(),
     onSuccess: () => {
       queryClient.clear();
-      router.replace("/(root)");
+      router.replace("/");
     },
   });
 };
@@ -57,7 +57,7 @@ export const useMsLogin = (token: string | null) => {
         ]);
       }
 
-      router.replace("/(root)/(protected)");
+      router.replace("/(protected)");
 
       return data;
     },

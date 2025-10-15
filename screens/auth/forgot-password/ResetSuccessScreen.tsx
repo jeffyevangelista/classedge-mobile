@@ -13,7 +13,7 @@ const SuccessScreen = () => {
           Now, you can use your new password to login to your account.
         </Text>
       </View>
-      <Link href="/" asChild>
+      <Link href="/(auth)/login" asChild>
         <Button title="Go to Login" />
       </Link>
     </View>

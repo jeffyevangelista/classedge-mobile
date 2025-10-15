@@ -31,7 +31,7 @@ const ForgotPasswordForm = () => {
       <Link href="/forgot-password/otp-verification" asChild>
         <Button title="Send Code" />
       </Link>
-      <Link href="/(root)" asChild>
+      <Link href="/" asChild>
         <Text>Back to login</Text>
       </Link>
     </View>
