@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { restoreSession } = useStore();
+  const { restoreSession, isAuthenticated } = useStore();
   const [sessionRestored, setSessionRestored] = useState(false);
 
   let [loaded, error] = useFonts({
@@ -65,13 +65,7 @@ export default function RootLayout() {
 
   return (
     <RootProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="(root)" />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
     </RootProvider>
   );
 }

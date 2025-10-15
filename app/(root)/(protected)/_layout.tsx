@@ -31,7 +31,7 @@ export default () => {
         guard={!authUser.needsOnboarding && !authUser.needsPasswordSetup}
       >
         <Stack.Screen
-          name="dashboard"
+          name="(dashboard)"
           options={{
             headerTitle: "Dashboard",
           }}

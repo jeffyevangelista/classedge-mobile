@@ -5,14 +5,13 @@ export default () => {
   const { isAuthenticated } = useStore();
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack>
       <Stack.Protected guard={!isAuthenticated}>
-        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
       </Stack.Protected>
       <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name="(protected)" />
       </Stack.Protected>
-      <Stack.Screen name="forgot-password" />
     </Stack>
   );
 };
