@@ -8,7 +8,11 @@ export default () => {
     return <Redirect href="/(auth)/login" />;
 
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="(dashboard)"
         options={{

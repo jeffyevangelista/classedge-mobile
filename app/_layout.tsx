@@ -65,7 +65,11 @@ export default function RootLayout() {
 
   return (
     <RootProvider>
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Protected
           guard={
             !isAuthenticated ||
@@ -82,7 +86,7 @@ export default function RootLayout() {
             !authUser?.needsOnboarding
           }
         >
-          <Stack.Screen name="(protected)" />
+          <Stack.Screen name="(main)" />
         </Stack.Protected>
       </Stack>
     </RootProvider>
