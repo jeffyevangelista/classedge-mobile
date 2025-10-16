@@ -4,14 +4,12 @@ import { Redirect, Stack } from "expo-router";
 export default () => {
   const { authUser } = useStore();
 
-  if (!authUser) return <Redirect href="/(auth)/login" />;
-
-  if (authUser.needsPasswordSetup && authUser.needsOnboarding)
+  if (authUser?.needsPasswordSetup && authUser?.needsOnboarding)
     return <Redirect href="/(auth)/setup-password" />;
 
-  if (authUser.needsOnboarding)
-    return <Redirect href="/(auth)/onboarding" />;
+  if (authUser?.needsOnboarding) return <Redirect href="/(auth)/onboarding" />;
 
+  if (!authUser) return <Redirect href="/(auth)/login" />;
   return (
     <Stack
       screenOptions={{

@@ -1,7 +1,9 @@
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
+import { getASData } from "@/lib/storage/async-storage";
 import useStore from "@/lib/store";
 import RootProvider from "@/providers/RootProvider";
+import { ASYNC_STORAGE_KEYS } from "@/utils/storage-keys";
 import { Poppins_100Thin } from "@expo-google-fonts/poppins/100Thin";
 import { Poppins_100Thin_Italic } from "@expo-google-fonts/poppins/100Thin_Italic";
 import { Poppins_200ExtraLight } from "@expo-google-fonts/poppins/200ExtraLight";
@@ -21,7 +23,7 @@ import { Poppins_800ExtraBold_Italic } from "@expo-google-fonts/poppins/800Extra
 import { Poppins_900Black } from "@expo-google-fonts/poppins/900Black";
 import { Poppins_900Black_Italic } from "@expo-google-fonts/poppins/900Black_Italic";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -29,8 +31,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const router = useRouter();
   const { restoreSession, isAuthenticated, authUser } = useStore();
   const [sessionRestored, setSessionRestored] = useState(false);
+  const [hasSeenIntro, setHasSeenIntro] = useState<boolean | null>(null);
 
   let [loaded, error] = useFonts({
     "Poppins-Thin": Poppins_100Thin,
@@ -54,17 +58,29 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    restoreSession().finally(() => setSessionRestored(true));
-  }, []);
+    const initialize = async () => {
+      await restoreSession();
+      setSessionRestored(true);
+      const seen = await getASData(ASYNC_STORAGE_KEYS.HAS_SEEN_INTRO);
+      setHasSeenIntro(seen === true);
+    };
+    initialize();
+  }, [restoreSession]);
 
   useEffect(() => {
-    if ((loaded || error) && sessionRestored) {
+    if ((loaded || error) && sessionRestored && hasSeenIntro !== null) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error, sessionRestored]);
+  }, [loaded, error, sessionRestored, hasSeenIntro]);
 
-  if ((!loaded && !error) || !sessionRestored) {
-    return null;
+  useEffect(() => {
+    if (hasSeenIntro === false && sessionRestored && (loaded || error)) {
+      router.replace("/intro");
+    }
+  }, [hasSeenIntro, sessionRestored, loaded, error, router]);
+
+  if ((!loaded && !error) || !sessionRestored || hasSeenIntro === null) {
+    return null; // still loading fonts/session/intro status
   }
 
   return (
@@ -94,6 +110,7 @@ export default function RootLayout() {
             >
               <Stack.Screen name="(main)" />
             </Stack.Protected>
+            <Stack.Screen name="intro/index" />
           </Stack>
           <StatusBar style="auto" />
         </RootProvider>
