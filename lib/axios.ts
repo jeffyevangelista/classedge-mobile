@@ -38,7 +38,7 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const { setAcessToken, refreshToken, clearCredentials } =
+    const { setAccessToken, refreshToken, clearCredentials } =
       useStore.getState();
     const originalRequest = error.config;
     if (
@@ -62,7 +62,7 @@ api.interceptors.response.use(
       try {
         const { access: accessToken } = await refresh(refreshToken);
 
-        await setAcessToken(accessToken);
+        await setAccessToken(accessToken);
         processQueue(null, accessToken);
         return api(originalRequest);
       } catch (err) {

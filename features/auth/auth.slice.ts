@@ -22,7 +22,7 @@ type AuthState = {
 };
 
 type AuthAction = {
-  setAcessToken: (token: string) => Promise<void>;
+  setAccessToken: (token: string) => Promise<void>;
   setRefreshToken: (token: string) => Promise<void>;
   restoreSession: () => Promise<void>;
   clearCredentials: () => Promise<void>;
@@ -39,7 +39,7 @@ const initialState: AuthState = {
 
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   ...initialState,
-  setAcessToken: async (token) => {
+  setAccessToken: async (token) => {
     const {
       user_id,
       role,

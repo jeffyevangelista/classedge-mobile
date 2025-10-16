@@ -8,13 +8,13 @@ import { refresh } from "./refreshToken";
 
 export const useLogin = () => {
   const router = useRouter();
-  const { setAcessToken, setRefreshToken } = useStore.getState();
+  const { setAccessToken, setRefreshToken } = useStore.getState();
   return useMutation({
     mutationKey: ["login"],
     mutationFn: (payload: LoginCredentials) => login(payload),
     onSuccess: async (data: AuthResponse) => {
       await Promise.all([
-        setAcessToken(data.access),
+        setAccessToken(data.access),
         setRefreshToken(data.refresh),
       ]);
       router.replace("/(main)/(tabs)");
@@ -44,7 +44,7 @@ export const useLogout = () => {
 
 export const useMsLogin = (token: string | null) => {
   const router = useRouter();
-  const { setAcessToken, setRefreshToken } = useStore.getState();
+  const { setAccessToken, setRefreshToken } = useStore.getState();
   return useQuery({
     queryKey: ["ms-login"],
     queryFn: async () => {
@@ -52,12 +52,14 @@ export const useMsLogin = (token: string | null) => {
 
       if (data) {
         await Promise.all([
-          setAcessToken(data.access),
+          setAccessToken(data.access),
           setRefreshToken(data.refresh),
         ]);
       }
 
       router.replace("/(main)/(tabs)");
+
+      console.log(data);
 
       return data;
     },
