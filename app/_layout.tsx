@@ -1,3 +1,5 @@
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import "@/global.css";
 import useStore from "@/lib/store";
 import RootProvider from "@/providers/RootProvider";
 import { Poppins_100Thin } from "@expo-google-fonts/poppins/100Thin";
@@ -20,7 +22,9 @@ import { Poppins_900Black } from "@expo-google-fonts/poppins/900Black";
 import { Poppins_900Black_Italic } from "@expo-google-fonts/poppins/900Black_Italic";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { SplashScreen, Stack } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -64,31 +68,36 @@ export default function RootLayout() {
   }
 
   return (
-    <RootProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Protected
-          guard={
-            !isAuthenticated ||
-            !!authUser?.needsPasswordSetup ||
-            !!authUser?.needsOnboarding
-          }
-        >
-          <Stack.Screen name="(auth)" />
-        </Stack.Protected>
-        <Stack.Protected
-          guard={
-            isAuthenticated &&
-            !authUser?.needsPasswordSetup &&
-            !authUser?.needsOnboarding
-          }
-        >
-          <Stack.Screen name="(main)" />
-        </Stack.Protected>
-      </Stack>
-    </RootProvider>
+    <SafeAreaProvider>
+      <GluestackUIProvider>
+        <RootProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Protected
+              guard={
+                !isAuthenticated ||
+                !!authUser?.needsPasswordSetup ||
+                !!authUser?.needsOnboarding
+              }
+            >
+              <Stack.Screen name="(auth)" />
+            </Stack.Protected>
+            <Stack.Protected
+              guard={
+                isAuthenticated &&
+                !authUser?.needsPasswordSetup &&
+                !authUser?.needsOnboarding
+              }
+            >
+              <Stack.Screen name="(main)" />
+            </Stack.Protected>
+          </Stack>
+          <StatusBar style="auto" />
+        </RootProvider>
+      </GluestackUIProvider>
+    </SafeAreaProvider>
   );
 }
