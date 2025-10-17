@@ -57,7 +57,7 @@ const LoginForm = () => {
             <FormControlLabel>
               <FormControlLabelText>Email</FormControlLabelText>
             </FormControlLabel>
-            <Input size="xl">
+            <Input size={height > 800 ? "xl" : "lg"}>
               <InputField
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -72,7 +72,7 @@ const LoginForm = () => {
             <FormControlLabel>
               <FormControlLabelText>Password</FormControlLabelText>
             </FormControlLabel>
-            <Input size="xl">
+            <Input size={height > 800 ? "xl" : "lg"}>
               <InputField
                 placeholder="Password"
                 value={password}
@@ -88,7 +88,7 @@ const LoginForm = () => {
           </FormControl>
 
           <Button
-            size="xl"
+            size={height > 800 ? "xl" : "lg"}
             onPress={handleLogin}
             disabled={isPending}
             className="mt-2"
