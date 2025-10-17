@@ -1,8 +1,9 @@
+import MSLogo from "@/assets/images/ms-logo.svg";
+import { Button, ButtonIcon } from "@/components/ui/button";
 import { MICROSOFT_CLIENT_ID, MICROSOFT_TENANT_ID } from "@/utils/env";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
-import { useEffect, useState } from "react";
-import { Pressable, Text } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useMsLogin } from "../auth.hooks";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -68,13 +69,15 @@ const MSAuthButton = () => {
   };
 
   return (
-    <Pressable
+    <Button
+      variant="outline"
+      size="lg"
+      className="rounded-lg"
       onPress={handleSignIn}
-      style={{ marginHorizontal: "auto", marginVertical: 10 }}
       disabled={isLoading}
     >
-      <Text>Sign in with Microsoft</Text>
-    </Pressable>
+      <ButtonIcon as={MSLogo} className="w-6 h-6" />
+    </Button>
   );
 };
 
