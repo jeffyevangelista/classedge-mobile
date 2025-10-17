@@ -48,6 +48,8 @@ const buttonStyle = tva({
         "bg-success-500 border-success-300 data-[hover=true]:bg-success-600 data-[hover=true]:border-success-400 data-[active=true]:bg-success-700 data-[active=true]:border-success-500 data-[focus-visible=true]:web:ring-indicator-info",
       negative:
         "bg-error-500 border-error-300 data-[hover=true]:bg-error-600 data-[hover=true]:border-error-400 data-[active=true]:bg-error-700 data-[active=true]:border-error-500 data-[focus-visible=true]:web:ring-indicator-info",
+      neutral:
+        "bg-background-200 border-background-300 data-[hover=true]:bg-background-300 data-[hover=true]:border-background-400 data-[active=true]:bg-background-400 data-[active=true]:border-background-500 data-[focus-visible=true]:web:ring-indicator-info",
       default:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
     },
@@ -92,6 +94,12 @@ const buttonStyle = tva({
         "px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent",
     },
     {
+      action: "neutral",
+      variant: "link",
+      class:
+        "px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent",
+    },
+    {
       action: "primary",
       variant: "outline",
       class:
@@ -115,6 +123,12 @@ const buttonStyle = tva({
       class:
         "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
     },
+    {
+      action: "neutral",
+      variant: "outline",
+      class:
+        "bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent",
+    },
   ],
 });
 
@@ -130,6 +144,8 @@ const buttonTextStyle = tva({
         "text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700",
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
+      neutral:
+        "text-typography-600 data-[hover=true]:text-typography-700 data-[active=true]:text-typography-800",
     },
     variant: {
       link: "data-[hover=true]:underline data-[active=true]:underline",
@@ -171,6 +187,12 @@ const buttonTextStyle = tva({
         "text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0",
     },
     {
+      variant: "solid",
+      action: "neutral",
+      class:
+        "text-typography-800 data-[hover=true]:text-typography-800 data-[active=true]:text-typography-800",
+    },
+    {
       variant: "outline",
       action: "primary",
       class:
@@ -193,6 +215,12 @@ const buttonTextStyle = tva({
       action: "negative",
       class:
         "text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500",
+    },
+    {
+      variant: "outline",
+      action: "neutral",
+      class:
+        "text-typography-600 data-[hover=true]:text-typography-700 data-[active=true]:text-typography-800",
     },
   ],
 });
@@ -223,6 +251,8 @@ const buttonIconStyle = tva({
 
       negative:
         "text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700",
+      neutral:
+        "text-typography-600 data-[hover=true]:text-typography-700 data-[active=true]:text-typography-800",
     },
   },
   parentCompoundVariants: [
@@ -249,6 +279,12 @@ const buttonIconStyle = tva({
       action: "negative",
       class:
         "text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0",
+    },
+    {
+      variant: "solid",
+      action: "neutral",
+      class:
+        "text-typography-800 data-[hover=true]:text-typography-800 data-[active=true]:text-typography-800",
     },
   ],
 });
