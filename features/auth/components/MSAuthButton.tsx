@@ -70,13 +70,13 @@ const MSAuthButton = () => {
 
   return (
     <Button
-      variant="outline"
+      variant="link"
       size="lg"
       className="rounded-lg"
       onPress={handleSignIn}
       disabled={isLoading}
     >
-      <ButtonIcon as={MSLogo} className="w-6 h-6" />
+      <ButtonIcon as={MSLogo} className="w-8 h-8" />
     </Button>
   );
 };

@@ -18,7 +18,7 @@ import MSAuthButton from "./MSAuthButton";
 
 const LoginForm = () => {
   const { height } = useWindowDimensions();
-  const verticalPadding = height > 800 ? 64 : 40;
+  const verticalPadding = height > 800 ? 64 : 30;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +57,7 @@ const LoginForm = () => {
             <FormControlLabel>
               <FormControlLabelText>Email</FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input size="xl">
               <InputField
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -72,7 +72,7 @@ const LoginForm = () => {
             <FormControlLabel>
               <FormControlLabelText>Password</FormControlLabelText>
             </FormControlLabel>
-            <Input>
+            <Input size="xl">
               <InputField
                 placeholder="Password"
                 value={password}
@@ -88,9 +88,10 @@ const LoginForm = () => {
           </FormControl>
 
           <Button
+            size="xl"
             onPress={handleLogin}
             disabled={isPending}
-            className="mt-2 py-4 rounded-lg"
+            className="mt-2"
           >
             <ButtonText>Login</ButtonText>
           </Button>
