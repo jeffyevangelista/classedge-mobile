@@ -1,46 +1,42 @@
+import { Box } from "@/components/ui/box";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 const OTPVerificationForm = () => {
+  const { height } = useWindowDimensions();
+  const isLarge = height > 800;
+
   return (
-    <View style={{ padding: 10 }}>
-      <Text
-        style={{
-          marginHorizontal: "auto",
-          fontSize: 24,
-          fontWeight: 700,
-          marginBottom: 10,
-        }}
-      >
-        Please Check your Email
-      </Text>
-      <Text style={{ marginBottom: 10, marginHorizontal: "auto" }}>
-        we have sent the code to @emailAddressHere
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#ccc",
-          padding: 10,
-          marginBottom: 10,
-        }}
-        placeholder="Enter OTP"
-      />
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text style={{}}>Didn't received the code?</Text>
-        <Button title="Resend" />
-      </View>
+    <Box className="w-full max-w-md mx-auto self-center gap-4">
+      {/* OTP Input */}
+      <Input size={isLarge ? "xl" : "lg"}>
+        <InputField
+          placeholder="Enter 6-digit code"
+          keyboardType="numeric"
+          maxLength={6}
+          textAlign="center"
+        />
+      </Input>
+
+      {/* Resend Section */}
+      <Box className="flex-row items-center justify-center mt-2">
+        <Text className="text-gray-500">Didn’t receive the code? </Text>
+        <Button variant="link" size={isLarge ? "xl" : "lg"}>
+          <ButtonText>Resend</ButtonText>
+        </Button>
+      </Box>
+
+      {/* Verify Button */}
       <Link href="/forgot-password/password-reset" asChild>
-        <Button title="Verify" />
+        <Button size={isLarge ? "xl" : "lg"} className="mt-4">
+          <ButtonText>Verify</ButtonText>
+        </Button>
       </Link>
-    </View>
+    </Box>
   );
 };
 

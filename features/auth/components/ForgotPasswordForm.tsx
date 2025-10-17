@@ -1,40 +1,24 @@
+import { Box } from "@/components/ui/box";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
 import { Link } from "expo-router";
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 const ForgotPasswordForm = () => {
+  const { height } = useWindowDimensions();
   return (
-    <View style={{ padding: 10 }}>
-      <Text
-        style={{
-          marginHorizontal: "auto",
-          fontSize: 24,
-          fontWeight: 700,
-          marginBottom: 10,
-        }}
-      >
-        Forgot Password?
-      </Text>
-      <Text style={{ marginBottom: 10, marginHorizontal: "auto" }}>
-        No worries, enter you email address and we'll send you reset
-        instructions
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#ccc",
-          padding: 10,
-          marginBottom: 10,
-        }}
-        placeholder="Email"
-      />
+    <Box className="w-full max-w-md mx-auto self-center">
+      <Input size={height > 800 ? "xl" : "lg"}>
+        <InputField placeholder="Email" />
+      </Input>
+
       <Link href="/forgot-password/otp-verification" asChild>
-        <Button title="Send Code" />
+        <Button size={height > 800 ? "xl" : "lg"} className="mt-2">
+          <ButtonText>Send Code</ButtonText>
+        </Button>
       </Link>
-      <Link href="/(auth)/login" asChild>
-        <Text>Back to login</Text>
-      </Link>
-    </View>
+    </Box>
   );
 };
 

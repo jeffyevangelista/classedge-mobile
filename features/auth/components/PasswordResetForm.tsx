@@ -1,48 +1,41 @@
+import { Box } from "@/components/ui/box";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
 import { Link } from "expo-router";
 import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 const PasswordResetForm = () => {
+  const { height } = useWindowDimensions();
+  const isLarge = height > 800;
+
   return (
-    <View style={{ padding: 10 }}>
-      <Text
-        style={{
-          marginHorizontal: "auto",
-          fontSize: 24,
-          fontWeight: 700,
-          marginBottom: 10,
-        }}
-      >
-        Set new password
-      </Text>
-      <Text style={{ marginBottom: 10, marginHorizontal: "auto" }}>
-        Create a new and more secure password
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#ccc",
-          padding: 10,
-          marginBottom: 10,
-        }}
-        placeholder="Enter New Password"
-      />
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#ccc",
-          padding: 10,
-          marginBottom: 10,
-        }}
-        placeholder="Confirm New Password"
-      />
+    <Box className="w-full max-w-md mx-auto self-center gap-4">
+      {/* New Password */}
+      <Input size={isLarge ? "xl" : "lg"}>
+        <InputField
+          placeholder="Enter new password"
+          secureTextEntry
+          textContentType="newPassword"
+        />
+      </Input>
+
+      {/* Confirm Password */}
+      <Input size={isLarge ? "xl" : "lg"}>
+        <InputField
+          placeholder="Confirm new password"
+          secureTextEntry
+          textContentType="password"
+        />
+      </Input>
+
+      {/* Submit */}
       <Link href="/forgot-password/reset-success" asChild>
-        <Button title="Reset Password" />
+        <Button size={isLarge ? "xl" : "lg"}>
+          <ButtonText>Reset Password</ButtonText>
+        </Button>
       </Link>
-      <Link href="/(auth)/login" asChild>
-        <Text>Cancel</Text>
-      </Link>
-    </View>
+    </Box>
   );
 };
 
