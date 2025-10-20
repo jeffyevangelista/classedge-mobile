@@ -43,7 +43,7 @@ const formControlErrorStyle = tva({
 });
 
 const formControlErrorTextStyle = tva({
-  base: 'text-error-700',
+  base: 'font-body text-error-700',
   variants: {
     isTruncated: {
       true: 'web:truncate',
@@ -87,7 +87,7 @@ const formControlHelperStyle = tva({
 });
 
 const formControlHelperTextStyle = tva({
-  base: 'text-typography-500',
+  base: 'font-body text-typography-500',
   variants: {
     isTruncated: {
       true: 'web:truncate',
@@ -131,7 +131,7 @@ const formControlLabelStyle = tva({
 });
 
 const formControlLabelTextStyle = tva({
-  base: 'font-medium text-typography-900',
+  base: 'font-body font-medium text-typography-900',
   variants: {
     isTruncated: {
       true: 'web:truncate',
