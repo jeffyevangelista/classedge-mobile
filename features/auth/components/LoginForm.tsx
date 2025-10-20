@@ -35,12 +35,12 @@ const LoginForm = () => {
       <Box className="w-full max-w-md">
         {/* Header Section */}
         <Box className="items-center mb-10">
-          <AppLogo width={112} height={112} className="mb-6" />
+          <AppLogo width={112} height={112} style={{ marginBottom: 6 }} />
           <Heading className="text-2xl font-semibold mb-1 text-center">
             Welcome to Classedge
           </Heading>
           <Text className="text-gray-500 text-center">
-            A learners platform of HCCCi
+            A learning platform of HCCCI
           </Text>
         </Box>
 
@@ -74,7 +74,6 @@ const LoginForm = () => {
             </FormControlLabel>
             <Input size={height > 800 ? "xl" : "lg"}>
               <InputField
-                placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
