@@ -134,7 +134,7 @@ const LoginForm = () => {
           <Button
             size={height > 800 ? "xl" : "lg"}
             onPress={handleSubmit(handleLogin)}
-            disabled={isPending}
+            isDisabled={isPending}
             className="mt-2"
           >
             <ButtonText>Login</ButtonText>

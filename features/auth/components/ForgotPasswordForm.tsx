@@ -42,6 +42,7 @@ const ForgotPasswordForm = () => {
           render={({ field: { onChange, value } }) => (
             <Input size={height > 800 ? "xl" : "lg"}>
               <InputField
+                keyboardType="email-address"
                 autoCapitalize="none"
                 placeholder="juandelacruz@hccci.edu.ph"
                 value={value}
