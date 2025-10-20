@@ -10,6 +10,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 const MSAuthButton = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [authInProgress, setAuthInProgress] = useState(false);
   const { isLoading } = useMsLogin(accessToken);
 
   const discovery = {
@@ -35,7 +36,6 @@ const MSAuthButton = () => {
     const getTokenAndUser = async () => {
       if (response?.type === "success" && request) {
         try {
-          // Properly exchange code for token
           const tokenResult = await AuthSession.exchangeCodeAsync(
             {
               clientId: MICROSOFT_CLIENT_ID,
@@ -45,7 +45,6 @@ const MSAuthButton = () => {
             },
             discovery
           );
-
           if (tokenResult.accessToken) {
             setAccessToken(tokenResult.accessToken);
           } else {
@@ -53,7 +52,11 @@ const MSAuthButton = () => {
           }
         } catch (err) {
           console.error("Token exchange failed:", err);
+        } finally {
+          setAuthInProgress(false); // reset guard after exchange
         }
+      } else if (response?.type !== "success") {
+        setAuthInProgress(false); // reset even if canceled
       }
     };
 
@@ -61,10 +64,14 @@ const MSAuthButton = () => {
   }, [response]);
 
   const handleSignIn = async () => {
+    if (!request || authInProgress) return;
+
     try {
+      setAuthInProgress(true);
       await promptAsync();
     } catch (error) {
       console.error("Error during sign-in:", error);
+      setAuthInProgress(false);
     }
   };
 
@@ -74,7 +81,7 @@ const MSAuthButton = () => {
       size="lg"
       className="rounded-lg"
       onPress={handleSignIn}
-      disabled={isLoading}
+      disabled={isLoading || authInProgress}
     >
       <ButtonIcon as={MSLogo} className="w-8 h-8" />
     </Button>
