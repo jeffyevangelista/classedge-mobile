@@ -1,4 +1,4 @@
-import ForgotPassword from "@/assets/images/forgot-password.svg";
+import ForgotPassword from "@/assets/images/illustrations/forgot-password/forgot-password.svg";
 import Screen from "@/components/screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -9,7 +9,6 @@ import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 const ForgotPasswordScreen = () => {
   const { height, width } = useWindowDimensions();
 
-  // Dynamic vertical padding (larger screens = more breathing room)
   const verticalSpacing = height > 800 ? 64 : 32;
 
   return (
@@ -22,7 +21,7 @@ const ForgotPasswordScreen = () => {
       >
         <ForgotPassword
           width={width * 0.7}
-          height={height * 0.35}
+          height={height * 0.2}
           style={styles.image}
         />
 
@@ -60,6 +59,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   image: {
-    marginBottom: 24,
+    marginBottom: 40,
   },
 });

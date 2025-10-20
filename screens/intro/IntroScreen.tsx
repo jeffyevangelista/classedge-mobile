@@ -1,8 +1,8 @@
-import CareerDevelopment from "@/assets/images/intro/career-development.svg";
-import OnlineLearning from "@/assets/images/intro/online-learning.svg";
-import ProgressTracking from "@/assets/images/intro/progress-tracking.svg";
-import Teaching from "@/assets/images/intro/teaching.svg";
-import Welcome from "@/assets/images/intro/welcome.svg";
+import CareerDevelopment from "@/assets/images/illustrations/intro/career-development.svg";
+import OnlineLearning from "@/assets/images/illustrations/intro/online-learning.svg";
+import ProgressTracking from "@/assets/images/illustrations/intro/progress-overview.svg";
+import Teaching from "@/assets/images/illustrations/intro/teaching.svg";
+import Welcome from "@/assets/images/illustrations/intro/welcome.svg";
 import Screen from "@/components/screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { storeASData } from "@/lib/storage/async-storage";
@@ -71,7 +71,7 @@ export default function IntroScreen() {
       <View style={styles.imageWrapper}>
         <item.image
           width={width * 0.7}
-          height={height * 0.45}
+          height={height * 0.3}
           resizeMode="contain"
         />
       </View>

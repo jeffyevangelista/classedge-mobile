@@ -1,4 +1,4 @@
-import EnterPassword from "@/assets/images/enter-password.svg";
+import EnterPassword from "@/assets/images/illustrations/forgot-password/enter-password.svg";
 import Screen from "@/components/screen";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
@@ -22,7 +22,7 @@ const PasswordResetScreen = () => {
         {/* Illustration */}
         <EnterPassword
           width={width * 0.7}
-          height={height * 0.35}
+          height={height * 0.2}
           style={styles.image}
         />
 
@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   image: {
-    marginBottom: 24,
+    marginBottom: 40,
   },
 });

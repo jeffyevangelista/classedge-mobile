@@ -1,4 +1,4 @@
-import Celebrating from "@/assets/images/celebrating.svg";
+import Success from "@/assets/images/illustrations/forgot-password/success.svg";
 import Screen from "@/components/screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -18,9 +18,9 @@ const SuccessScreen = () => {
           { paddingTop: verticalSpacing, paddingBottom: verticalSpacing / 2 },
         ]}
       >
-        <Celebrating
+        <Success
           width={width * 0.7}
-          height={height * 0.35}
+          height={height * 0.2}
           style={styles.image}
         />
         <Heading className="text-2xl font-semibold mb-2 text-center">
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   image: {
-    marginBottom: 24,
+    marginBottom: 40,
   },
 });

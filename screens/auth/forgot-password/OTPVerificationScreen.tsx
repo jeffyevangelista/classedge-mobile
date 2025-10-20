@@ -1,4 +1,4 @@
-import MailSent from "@/assets/images/mail-sent.svg";
+import MailSent from "@/assets/images/illustrations/forgot-password/mail-sent.svg";
 import Screen from "@/components/screen";
 import { Text } from "@/components/ui/text";
 import OTPVerificationForm from "@/features/auth/components/OTPVerificationForm";
@@ -19,7 +19,7 @@ const OTPVerificationScreen = () => {
         {/* Illustration */}
         <MailSent
           width={width * 0.7}
-          height={height * 0.35}
+          height={height * 0.2}
           style={styles.image}
         />
 
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   image: {
-    marginBottom: 24,
+    marginBottom: 40,
   },
 });

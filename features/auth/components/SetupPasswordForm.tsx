@@ -1,42 +1,52 @@
-import React, { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Box } from "@/components/ui/box";
+import { Button, ButtonText } from "@/components/ui/button";
+import { FormControl } from "@/components/ui/form-control";
+import { Heading } from "@/components/ui/heading";
+import { Input, InputField } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { useState } from "react";
+import { useWindowDimensions } from "react-native";
 
 const SetupPasswordForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const { height } = useWindowDimensions();
   return (
-    <View
+    <Box
       style={{
         marginHorizontal: 10,
         gap: 10,
         paddingVertical: 20,
       }}
     >
-      <View>
-        <Text style={{ textAlign: "center", fontSize: 24, fontWeight: "700" }}>
-          Set a Password{" "}
-        </Text>
-        <Text style={{ textAlign: "center", fontSize: 16 }}>
-          Create a secure password to continue{" "}
-        </Text>
-      </View>
+      <Box>
+        <Heading>Set a Password </Heading>
+        <Text>Create a secure password to continue </Text>
+      </Box>
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        style={{ borderWidth: 1, borderColor: "#ccc", padding: 10 }}
-      />
-      <TextInput
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        style={{ borderWidth: 1, borderColor: "#ccc", padding: 10 }}
-      />
+      <FormControl>
+        <Input size={height > 800 ? "xl" : "lg"}>
+          <InputField
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+          />
+        </Input>
+      </FormControl>
+      <FormControl>
+        <Input size={height > 800 ? "xl" : "lg"}>
+          <InputField
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+        </Input>
+      </FormControl>
 
-      <Button title="Continue" onPress={() => {}} />
-    </View>
+      <Button>
+        <ButtonText>Continue</ButtonText>
+      </Button>
+    </Box>
   );
 };
 

@@ -1,11 +1,15 @@
+import Screen from "@/components/screen";
 import SetupPasswordForm from "@/features/auth/components/SetupPasswordForm";
-import React from "react";
-import { View } from "react-native";
+import { useWindowDimensions } from "react-native";
 
-const SetupPasswordScreen = () => (
-  <View>
-    <SetupPasswordForm />
-  </View>
-);
+const SetupPasswordScreen = () => {
+  const { height } = useWindowDimensions();
+  const verticalPadding = height > 800 ? 64 : 30;
+  return (
+    <Screen withPadding={false} safeArea={true}>
+      <SetupPasswordForm />
+    </Screen>
+  );
+};
 
 export default SetupPasswordScreen;
