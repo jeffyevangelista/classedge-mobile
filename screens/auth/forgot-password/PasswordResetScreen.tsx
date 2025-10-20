@@ -43,6 +43,7 @@ const PasswordResetScreen = () => {
         <Link href="/(auth)/login" asChild>
           <Button
             variant="link"
+            action="neutral"
             className="mx-auto mt-6 w-[80%] max-w-md self-center"
           >
             <ButtonText>Cancel</ButtonText>
