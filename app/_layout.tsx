@@ -92,22 +92,10 @@ export default function RootLayout() {
               headerShown: false,
             }}
           >
-            <Stack.Protected
-              guard={
-                !isAuthenticated ||
-                !!authUser?.needsPasswordSetup ||
-                !!authUser?.needsOnboarding
-              }
-            >
+            <Stack.Protected guard={!isAuthenticated}>
               <Stack.Screen name="(auth)" />
             </Stack.Protected>
-            <Stack.Protected
-              guard={
-                isAuthenticated &&
-                !authUser?.needsPasswordSetup &&
-                !authUser?.needsOnboarding
-              }
-            >
+            <Stack.Protected guard={isAuthenticated}>
               <Stack.Screen name="(main)" />
             </Stack.Protected>
             <Stack.Screen name="intro/index" />

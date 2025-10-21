@@ -1,22 +1,24 @@
 import useStore from "@/lib/store";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 
-export default () => {
+export default function MainLayout() {
   const { authUser } = useStore();
 
-  if (authUser?.needsPasswordSetup && authUser?.needsOnboarding)
-    return <Redirect href="/(auth)/setup-password" />;
+  console.log("is string?", typeof authUser, authUser);
 
-  if (authUser?.needsOnboarding) return <Redirect href="/(auth)/onboarding" />;
-
-  if (!authUser) return <Redirect href="/(auth)/login" />;
   return (
     <Stack
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="(tabs)" />
+      <Stack.Protected guard={!!authUser?.needsPasswordSetup}>
+        <Stack.Screen name="setup-password" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={!authUser?.needsPasswordSetup}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
     </Stack>
   );
-};
+}
