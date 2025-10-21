@@ -2,7 +2,7 @@ import useStore from "@/lib/store";
 import { queryClient } from "@/providers/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { login, msLogin } from "./auth.apis";
+import { login, msLogin, setupPassword } from "./auth.apis";
 import { AuthResponse, LoginCredentials } from "./auth.types";
 import { refresh } from "./refreshToken";
 
@@ -65,5 +65,21 @@ export const useMsLogin = (token: string | null) => {
     },
 
     enabled: !!token,
+  });
+};
+
+export const useSetupPassword = () => {
+  const router = useRouter();
+  const { setAccessToken, setRefreshToken } = useStore.getState();
+  return useMutation({
+    mutationKey: ["setup-password"],
+    mutationFn: (password: string) => setupPassword(password),
+    onSuccess: async (data: AuthResponse) => {
+      await Promise.all([
+        setAccessToken(data.access),
+        setRefreshToken(data.refresh),
+      ]);
+      router.replace("/(main)/(tabs)");
+    },
   });
 };

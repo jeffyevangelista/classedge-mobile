@@ -24,6 +24,6 @@ export type DecodedToken = {
   jti: string;
   user_id: number;
   role: string[];
-  needs_password_setup: false;
-  needs_onboarding: false;
+  needs_password_setup: boolean;
+  needs_onboarding: boolean;
 };

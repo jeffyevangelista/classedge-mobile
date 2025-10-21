@@ -17,3 +17,7 @@ export const msLogin = async (token: string | null): Promise<AuthResponse> => {
     })
   ).data;
 };
+
+export const setupPassword = async (password: string) => {
+  return (await api.patch("/auth/setup-password/", { password })).data;
+};
