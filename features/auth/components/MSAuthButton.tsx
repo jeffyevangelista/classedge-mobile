@@ -81,7 +81,7 @@ const MSAuthButton = () => {
       size="lg"
       className="rounded-lg"
       onPress={handleSignIn}
-      disabled={isLoading || authInProgress}
+      isDisabled={isLoading || authInProgress}
     >
       <ButtonIcon as={MSLogo} className="w-8 h-8" />
     </Button>

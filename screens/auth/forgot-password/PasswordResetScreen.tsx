@@ -2,6 +2,7 @@ import EnterPassword from "@/assets/images/illustrations/forgot-password/enter-p
 import Screen from "@/components/screen";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import PasswordResetForm from "@/features/auth/components/PasswordResetForm";
 import { Link } from "expo-router";
@@ -27,9 +28,9 @@ const PasswordResetScreen = () => {
         />
 
         {/* Title */}
-        <Text className="text-2xl font-semibold mb-2 text-center">
+        <Heading className="text-2xl font-semibold mb-2 text-center">
           Set a New Password
-        </Text>
+        </Heading>
 
         {/* Subtitle */}
         <Text className="text-gray-500 text-center mb-8 max-w-md self-center">
