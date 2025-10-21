@@ -49,15 +49,12 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
 
     await Promise.all([
       storeSSData(ACCESS_TOKEN_KEY, token),
-      storeASData(
-        ASYNC_STORAGE_KEYS.AUTH_USER,
-        JSON.stringify({
-          id: user_id,
-          role,
-          needsOnboarding,
-          needsPasswordSetup,
-        })
-      ),
+      storeASData(ASYNC_STORAGE_KEYS.AUTH_USER, {
+        id: user_id,
+        role,
+        needsOnboarding,
+        needsPasswordSetup,
+      }),
     ]);
 
     set({
