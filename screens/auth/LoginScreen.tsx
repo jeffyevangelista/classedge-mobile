@@ -1,19 +1,15 @@
-import Screen from "@/components/screen";
-import { Button, ButtonText } from "@/components/ui/button";
 import LoginForm from "@/features/auth/components/LoginForm";
-import { storeASData } from "@/lib/storage/async-storage";
-import { ASYNC_STORAGE_KEYS } from "@/utils/storage-keys";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default () => {
-  const resetIntro = async () => {
-    await storeASData(ASYNC_STORAGE_KEYS.HAS_SEEN_INTRO, "false");
-  };
   return (
-    <Screen safeArea={true} withPadding={false}>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={65}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <LoginForm />
-      <Button variant="link" onPress={resetIntro}>
-        <ButtonText>Reset Intro</ButtonText>
-      </Button>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };

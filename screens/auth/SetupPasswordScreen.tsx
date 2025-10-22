@@ -1,16 +1,21 @@
 import SecureLogin from "@/assets/images/illustrations/intro/secure-login.svg";
-import Screen from "@/components/screen";
 import { Box } from "@/components/ui/box";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import SetupPasswordForm from "@/features/auth/components/SetupPasswordForm";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const SetupPasswordScreen = () => {
   const { height, width } = useWindowDimensions();
   const verticalPadding = height > 800 ? 64 : 30;
   return (
-    <Screen withPadding={false} safeArea>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={65}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <Box
         style={[
           styles.container,
@@ -32,7 +37,7 @@ const SetupPasswordScreen = () => {
         </Text>
         <SetupPasswordForm />
       </Box>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };
 
