@@ -20,7 +20,7 @@ const MSAuthButton = () => {
 
   const redirectUri = AuthSession.makeRedirectUri({
     scheme: "hcccilms",
-    path: "dashboard",
+    path: "auth/callback",
   });
 
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
