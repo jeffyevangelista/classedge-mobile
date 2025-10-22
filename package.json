@@ -51,6 +51,7 @@
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-heroicons": "^4.0.0",
+    "react-native-keyboard-controller": "1.18.5",
     "react-native-otp-entry": "^1.8.5",
     "react-native-react-query-devtools": "^1.5.1",
     "react-native-reanimated": "~4.1.0",
