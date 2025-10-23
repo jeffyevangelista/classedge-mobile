@@ -1,17 +1,22 @@
 import Success from "@/assets/images/illustrations/forgot-password/success.svg";
-import Screen from "@/components/screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { Link } from "expo-router";
 import React from "react";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const SuccessScreen = () => {
   const { height, width } = useWindowDimensions();
   const verticalSpacing = height > 800 ? 64 : 32;
   return (
-    <Screen withPadding={false} safeArea>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={65}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f9f9f9" }}
+    >
       <View
         style={[
           styles.container,
@@ -35,7 +40,7 @@ const SuccessScreen = () => {
           </Button>
         </Link>
       </View>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };
 

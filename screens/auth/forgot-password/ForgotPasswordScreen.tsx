@@ -1,10 +1,10 @@
 import ForgotPassword from "@/assets/images/illustrations/forgot-password/forgot-password.svg";
-import Screen from "@/components/screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import ForgotPasswordForm from "@/features/auth/components/ForgotPasswordForm";
 import { Link } from "expo-router";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const ForgotPasswordScreen = () => {
   const { height, width } = useWindowDimensions();
@@ -12,7 +12,12 @@ const ForgotPasswordScreen = () => {
   const verticalSpacing = height > 800 ? 64 : 32;
 
   return (
-    <Screen withPadding={false} safeArea>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={65}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f9f9f9" }}
+    >
       <View
         style={[
           styles.container,
@@ -45,7 +50,7 @@ const ForgotPasswordScreen = () => {
           </Button>
         </Link>
       </View>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };
 

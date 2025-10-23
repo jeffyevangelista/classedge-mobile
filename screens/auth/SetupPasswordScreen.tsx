@@ -14,7 +14,7 @@ const SetupPasswordScreen = () => {
       showsVerticalScrollIndicator={false}
       bottomOffset={65}
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f9f9f9" }}
     >
       <Box
         style={[

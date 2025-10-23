@@ -1,15 +1,23 @@
 import MailSent from "@/assets/images/illustrations/forgot-password/mail-sent.svg";
-import Screen from "@/components/screen";
 import { Text } from "@/components/ui/text";
 import OTPVerificationForm from "@/features/auth/components/OTPVerificationForm";
+import useStore from "@/lib/store";
+import { maskEmail } from "@/utils/mask";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const OTPVerificationScreen = () => {
   const { height, width } = useWindowDimensions();
   const verticalSpacing = height > 800 ? 64 : 32;
+  const { email } = useStore();
 
   return (
-    <Screen safeArea withPadding={false}>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={65}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f9f9f9" }}
+    >
       <View
         style={[
           styles.container,
@@ -30,7 +38,7 @@ const OTPVerificationScreen = () => {
         <Text className="text-gray-500 text-center mb-8 max-w-md self-center">
           We’ve sent a 6-digit verification code to{" "}
           <Text className="font-semibold text-primary-600">
-            email@example.com
+            {maskEmail(email || "")}
           </Text>
         </Text>
 
@@ -39,7 +47,7 @@ const OTPVerificationScreen = () => {
           <OTPVerificationForm />
         </View>
       </View>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };
 

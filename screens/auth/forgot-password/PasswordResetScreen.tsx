@@ -1,5 +1,4 @@
 import EnterPassword from "@/assets/images/illustrations/forgot-password/enter-password.svg";
-import Screen from "@/components/screen";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -7,13 +6,19 @@ import { Text } from "@/components/ui/text";
 import PasswordResetForm from "@/features/auth/components/PasswordResetForm";
 import { Link } from "expo-router";
 import { StyleSheet, useWindowDimensions } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const PasswordResetScreen = () => {
   const { height, width } = useWindowDimensions();
   const verticalSpacing = height > 800 ? 64 : 32;
 
   return (
-    <Screen withPadding={false} safeArea>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      bottomOffset={75}
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "#f9f9f9" }}
+    >
       <Box
         style={[
           styles.container,
@@ -51,7 +56,7 @@ const PasswordResetScreen = () => {
           </Button>
         </Link>
       </Box>
-    </Screen>
+    </KeyboardAwareScrollView>
   );
 };
 
