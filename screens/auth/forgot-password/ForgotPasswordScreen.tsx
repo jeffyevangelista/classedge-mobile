@@ -2,14 +2,14 @@ import ForgotPassword from "@/assets/images/illustrations/forgot-password/forgot
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import ForgotPasswordForm from "@/features/auth/components/ForgotPasswordForm";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const ForgotPasswordScreen = () => {
   const { height, width } = useWindowDimensions();
-
   const verticalSpacing = height > 800 ? 64 : 32;
+  const router = useRouter();
 
   return (
     <KeyboardAwareScrollView
@@ -40,15 +40,14 @@ const ForgotPasswordScreen = () => {
 
         <ForgotPasswordForm />
 
-        <Link href="/(auth)/login" asChild>
-          <Button
-            action="neutral"
-            variant="link"
-            className="mx-auto mt-6 w-[80%] max-w-md self-center"
-          >
-            <ButtonText>Back to Login</ButtonText>
-          </Button>
-        </Link>
+        <Button
+          onPress={() => router.back()}
+          action="neutral"
+          variant="link"
+          className="mx-auto mt-6 w-[80%] max-w-md self-center"
+        >
+          <ButtonText>Back to Login</ButtonText>
+        </Button>
       </View>
     </KeyboardAwareScrollView>
   );
