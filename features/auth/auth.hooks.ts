@@ -2,7 +2,14 @@ import useStore from "@/lib/store";
 import { queryClient } from "@/providers/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { login, msLogin, setupPassword } from "./auth.apis";
+import {
+  forgotPassword,
+  login,
+  msLogin,
+  resetPassword,
+  setupPassword,
+  verifyOtp,
+} from "./auth.apis";
 import { AuthResponse, LoginCredentials } from "./auth.types";
 import { refresh } from "./refreshToken";
 
@@ -81,5 +88,32 @@ export const useSetupPassword = () => {
       ]);
       router.replace("/(main)/(tabs)");
     },
+  });
+};
+
+export const useForgotPassword = () => {
+  const { setEmail } = useStore.getState();
+  return useMutation({
+    mutationKey: ["forgot-password"],
+    mutationFn: ({ email }: { email: string }) => forgotPassword(email),
+    onSuccess: (_, { email }: { email: string }) => {
+      setEmail(email);
+    },
+  });
+};
+
+export const useVerifyOtp = () => {
+  return useMutation({
+    mutationKey: ["verify-otp"],
+    mutationFn: ({ email, otp }: { email: string; otp: string }) =>
+      verifyOtp(email, otp),
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationKey: ["reset-password"],
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      resetPassword(email, password),
   });
 };

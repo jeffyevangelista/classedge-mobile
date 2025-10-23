@@ -19,6 +19,7 @@ type AuthState = {
   isAuthenticated: boolean;
   refreshToken: string | null;
   authUser: AuthUser | null;
+  email: string | null;
 };
 
 type AuthAction = {
@@ -26,6 +27,7 @@ type AuthAction = {
   setRefreshToken: (token: string) => Promise<void>;
   restoreSession: () => Promise<void>;
   clearCredentials: () => Promise<void>;
+  setEmail: (email: string) => void;
 };
 
 export type AuthSlice = AuthState & AuthAction;
@@ -35,6 +37,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   refreshToken: null,
   authUser: null,
+  email: null,
 };
 
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
@@ -91,6 +94,7 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
     ]);
     set(() => ({ ...initialState }));
   },
+  setEmail: (email) => set({ email }),
 });
 
 export default createAuthSlice;

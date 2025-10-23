@@ -1,16 +1,23 @@
 // SetupPasswordScreen.tsx
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
+import useStore from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { AnimatePresence, MotiView } from "moti";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useWindowDimensions } from "react-native";
-import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/outline";
+import {
+  ExclamationCircleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "react-native-heroicons/outline";
 import zxcvbn from "zxcvbn";
+import { useResetPassword } from "../auth.hooks";
 import {
   ConfirmPasswordFormValues,
   confirmPasswordSchema,
@@ -19,6 +26,14 @@ import {
 const PasswordResetForm = () => {
   const { height } = useWindowDimensions();
   const isLarge = height > 800;
+  const { email } = useStore.getState();
+  const router = useRouter();
+  const {
+    mutateAsync: resetPassword,
+    isPending,
+    isError,
+    error,
+  } = useResetPassword();
   const { control, handleSubmit, watch, formState } =
     useForm<ConfirmPasswordFormValues>({
       resolver: zodResolver(confirmPasswordSchema),
@@ -31,12 +46,19 @@ const PasswordResetForm = () => {
   const scoreColors = ["#f87171", "#fb923c", "#facc15", "#4ade80", "#22c55e"];
   const scoreLabels = ["Very weak", "Weak", "Fair", "Good", "Strong"];
 
-  const onSubmit = (data: ConfirmPasswordFormValues) => {
-    console.log("✅ Password created:", data.password);
+  const onSubmit = async (data: ConfirmPasswordFormValues) => {
+    await resetPassword({ email: email!, password: data.password });
+    router.replace("/(auth)/forgot-password/reset-success");
   };
 
   return (
     <Box className="w-full max-w-md max-auto self-center gap-4">
+      {isError && (
+        <Alert action="error">
+          <AlertIcon as={ExclamationCircleIcon} />
+          <AlertText>{error.message}</AlertText>
+        </Alert>
+      )}
       <Controller
         control={control}
         name="password"
@@ -116,12 +138,16 @@ const PasswordResetForm = () => {
       <Link href="/forgot-password/reset-success" asChild>
         <Button
           size={isLarge ? "xl" : "lg"}
-          isDisabled={!formState.isValid}
+          isDisabled={!formState.isValid || isPending}
           onPress={handleSubmit(onSubmit)}
         >
-          <ButtonText className="text-white text-center font-semibold text-base">
-            Continue
-          </ButtonText>
+          {isPending ? (
+            <ButtonSpinner />
+          ) : (
+            <ButtonText className="text-white text-center font-semibold text-base">
+              Continue
+            </ButtonText>
+          )}
         </Button>
       </Link>
     </Box>
