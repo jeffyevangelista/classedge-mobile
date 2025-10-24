@@ -6,11 +6,11 @@ import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import useStore from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useRouter } from "expo-router";
+import { Link, useFocusEffect, useRouter } from "expo-router";
 import { AnimatePresence, MotiView } from "moti";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useWindowDimensions } from "react-native";
+import { TextInput, useWindowDimensions } from "react-native";
 import {
   ExclamationCircleIcon,
   EyeIcon,
@@ -24,6 +24,7 @@ import {
 } from "../auth.schemas";
 
 const PasswordResetForm = () => {
+  const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
   const { height } = useWindowDimensions();
   const isLarge = height > 800;
   const { email } = useStore.getState();
@@ -51,6 +52,16 @@ const PasswordResetForm = () => {
     router.replace("/(auth)/forgot-password/reset-success");
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      // Delay to ensure input is mounted before focusing
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
+      return () => clearTimeout(timer);
+    }, [])
+  );
+
   return (
     <Box className="w-full max-w-md max-auto self-center gap-4">
       {isError && (
@@ -66,6 +77,7 @@ const PasswordResetForm = () => {
           <>
             <Input size={isLarge ? "xl" : "lg"}>
               <InputField
+                ref={inputRef as any}
                 placeholder="New password"
                 value={value}
                 onChangeText={onChange}
