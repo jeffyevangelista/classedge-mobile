@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControl,
   FormControlError,
@@ -14,7 +14,11 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useWindowDimensions } from "react-native";
-import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/outline";
+import {
+  ExclamationCircleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "react-native-heroicons/outline";
 import { useLogin } from "../auth.hooks";
 import { LoginFormValues, loginSchema } from "../auth.schemas";
 
@@ -41,7 +45,7 @@ const LoginForm = () => {
     <Box className="w-full gap-5">
       {isError && (
         <Alert action="error">
-          <AlertIcon />
+          <AlertIcon as={ExclamationCircleIcon} />
           <AlertText>{error.message}</AlertText>
         </Alert>
       )}
@@ -117,7 +121,7 @@ const LoginForm = () => {
         isDisabled={isPending}
         className="mt-2"
       >
-        <ButtonText>Login</ButtonText>
+        {isPending ? <ButtonSpinner /> : <ButtonText>Login</ButtonText>}
       </Button>
     </Box>
   );
