@@ -84,25 +84,21 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <GluestackUIProvider>
-        <RootProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Protected guard={!isAuthenticated}>
-              <Stack.Screen name="(auth)" />
-            </Stack.Protected>
-            <Stack.Protected guard={isAuthenticated}>
-              <Stack.Screen name="(main)" />
-            </Stack.Protected>
-            <Stack.Screen name="intro/index" />
-          </Stack>
-          <StatusBar style="auto" />
-        </RootProvider>
-      </GluestackUIProvider>
-    </SafeAreaProvider>
+    <RootProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Protected guard={!isAuthenticated}>
+          <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+        <Stack.Protected guard={isAuthenticated}>
+          <Stack.Screen name="(main)" />
+        </Stack.Protected>
+        <Stack.Screen name="intro/index" />
+      </Stack>
+      <StatusBar style="auto" />
+    </RootProvider>
   );
 }
