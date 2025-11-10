@@ -20,6 +20,7 @@ type AuthState = {
   refreshToken: string | null;
   authUser: AuthUser | null;
   email: string | null;
+  expiresAt: number | null;
 };
 
 type AuthAction = {
@@ -38,6 +39,7 @@ const initialState: AuthState = {
   refreshToken: null,
   authUser: null,
   email: null,
+  expiresAt: null,
 };
 
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
@@ -48,7 +50,9 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       role,
       needs_onboarding: needsOnboarding,
       needs_password_setup: needsPasswordSetup,
+      exp,
     } = jwtDecode<DecodedToken>(token);
+    const expiresAt = exp * 1000;
 
     await Promise.all([
       storeSSData(ACCESS_TOKEN_KEY, token),
@@ -58,12 +62,14 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
         needsOnboarding,
         needsPasswordSetup,
       }),
+      storeASData(ASYNC_STORAGE_KEYS.EXPIRES_AT, expiresAt.toString()),
     ]);
 
     set({
       accessToken: token,
       authUser: { id: user_id, role, needsOnboarding, needsPasswordSetup },
       isAuthenticated: true,
+      expiresAt,
     });
   },
   setRefreshToken: async (token) => {
@@ -71,19 +77,26 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
     set({ refreshToken: token, isAuthenticated: true });
   },
   restoreSession: async () => {
-    const [accessToken, refreshToken, authUser] = await Promise.all([
+    const [accessToken, refreshToken, authUser, expiresAt] = await Promise.all([
       getSSData(ACCESS_TOKEN_KEY),
       getSSData(REFRESH_TOKEN_KEY),
       getASData<AuthUser | null>(ASYNC_STORAGE_KEYS.AUTH_USER),
+      getASData<string | null>(ASYNC_STORAGE_KEYS.EXPIRES_AT),
     ]);
 
-    const isAuthenticated = !!(accessToken && refreshToken && authUser);
+    const isAuthenticated = !!(
+      accessToken &&
+      refreshToken &&
+      authUser &&
+      expiresAt
+    );
 
     set({
       accessToken,
       refreshToken,
       authUser,
       isAuthenticated,
+      expiresAt: expiresAt ? Number(expiresAt) : null,
     });
   },
   clearCredentials: async () => {
@@ -91,6 +104,7 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       deleteSSData(ACCESS_TOKEN_KEY),
       deleteSSData(REFRESH_TOKEN_KEY),
       deleteASData(ASYNC_STORAGE_KEYS.AUTH_USER),
+      deleteASData(ASYNC_STORAGE_KEYS.EXPIRES_AT),
     ]);
     set(() => ({ ...initialState }));
   },

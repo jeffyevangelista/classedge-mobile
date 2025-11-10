@@ -1,4 +1,3 @@
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import { getASData } from "@/lib/storage/async-storage";
 import useStore from "@/lib/store";
@@ -26,13 +25,12 @@ import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
-  const { restoreSession, isAuthenticated, authUser } = useStore();
+  const { restoreSession, isAuthenticated, clearCredentials } = useStore();
   const [sessionRestored, setSessionRestored] = useState(false);
   const [hasSeenIntro, setHasSeenIntro] = useState<boolean | null>(null);
 
@@ -57,28 +55,40 @@ export default function RootLayout() {
     "Poppins-BlackItalic": Poppins_900Black_Italic,
   });
 
-  useEffect(() => {
-    const initialize = async () => {
+  const loadSession = async () => {
+    try {
       await restoreSession();
-      setSessionRestored(true);
       const seen = await getASData(ASYNC_STORAGE_KEYS.HAS_SEEN_INTRO);
       setHasSeenIntro(seen === true);
-    };
-    initialize();
-  }, [restoreSession]);
+    } catch (error) {
+      console.warn("Session restore failed:", error);
+      await clearCredentials();
+      setHasSeenIntro(false);
+    } finally {
+      setSessionRestored(true);
+    }
+  };
 
+  // Run once on app mount
+  useEffect(() => {
+    loadSession();
+  }, []);
+
+  // Hide splash when ready
   useEffect(() => {
     if ((loaded || error) && sessionRestored && hasSeenIntro !== null) {
       SplashScreen.hideAsync();
     }
   }, [loaded, error, sessionRestored, hasSeenIntro]);
 
+  // Intro routing
   useEffect(() => {
     if (hasSeenIntro === false && sessionRestored && (loaded || error)) {
       router.replace("/intro");
     }
   }, [hasSeenIntro, sessionRestored, loaded, error, router]);
 
+  // Still initializing
   if ((!loaded && !error) || !sessionRestored || hasSeenIntro === null) {
     return null; // still loading fonts/session/intro status
   }

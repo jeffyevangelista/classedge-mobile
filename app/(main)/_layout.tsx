@@ -2,9 +2,9 @@ import useStore from "@/lib/store";
 import { Stack } from "expo-router";
 
 export default function MainLayout() {
-  const { authUser } = useStore();
+  const { authUser, expiresAt } = useStore();
 
-  console.log("is string?", typeof authUser, authUser);
+  console.log({ expiresAt }, typeof expiresAt);
 
   return (
     <Stack
