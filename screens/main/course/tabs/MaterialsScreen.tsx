@@ -1,10 +1,10 @@
-import React from "react";
-import { Text, View } from "react-native";
+import MaterialList from "@/features/materials/components/MaterialList";
+import { View } from "react-native";
 
 const MaterialsScreen = () => {
   return (
     <View>
-      <Text>MaterialsScreen</Text>
+      <MaterialList />
     </View>
   );
 };

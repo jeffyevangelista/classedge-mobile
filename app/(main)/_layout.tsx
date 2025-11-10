@@ -19,6 +19,10 @@ export default function MainLayout() {
       <Stack.Protected guard={!authUser?.needsPasswordSetup}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="course" />
+        <Stack.Screen
+          name="material/[id]/index"
+          options={{ headerShown: true, title: "Lesson" }}
+        />
       </Stack.Protected>
     </Stack>
   );
