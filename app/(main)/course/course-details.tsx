@@ -1,12 +1,3 @@
-import React from "react";
-import { Text, View } from "react-native";
+import CourseDetailsScreen from "@/screens/main/course/CourseDetailsScreen";
 
-const CourseDetailsScreen = () => {
-  return (
-    <View>
-      <Text>CourseDetailsScreen</Text>
-    </View>
-  );
-};
-
-export default CourseDetailsScreen;
+export default () => <CourseDetailsScreen />;
