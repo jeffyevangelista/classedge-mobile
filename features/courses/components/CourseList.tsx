@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import React from "react";
 import { FlatList, Text } from "react-native";
-import { useCourses } from "../course.hooks";
+import { useCourses } from "../courses.hooks";
 
 const CourseList = () => {
   const {

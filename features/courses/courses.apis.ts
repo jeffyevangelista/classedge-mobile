@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Course } from "./course.types";
+import { Course } from "./courses.types";
 
 export const getCourses = async ({
   pageParam = 1,
