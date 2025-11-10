@@ -18,6 +18,7 @@ export default function MainLayout() {
 
       <Stack.Protected guard={!authUser?.needsPasswordSetup}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="subject" />
       </Stack.Protected>
     </Stack>
   );
