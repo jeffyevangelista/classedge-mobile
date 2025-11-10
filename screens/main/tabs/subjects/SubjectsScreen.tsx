@@ -1,10 +1,11 @@
+import CourseList from "@/features/course/components/CourseList";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const SubjectsScreen = () => {
   return (
     <View>
-      <Text>SubjectsScreen</Text>
+      <CourseList />
     </View>
   );
 };
