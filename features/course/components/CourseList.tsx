@@ -25,7 +25,7 @@ const CourseList = () => {
     <FlatList
       data={courses}
       renderItem={({ item }) => (
-        <Link href={`/subject/${item.id}`}>
+        <Link href={`/course/${item.id}`}>
           <Text>{item.subject_name}</Text>
         </Link>
       )}

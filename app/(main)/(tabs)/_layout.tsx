@@ -92,7 +92,7 @@ export default () => (
       }}
     />
     <Tabs.Screen
-      name="subjects"
+      name="courses"
       options={{
         headerShown: false,
         tabBarIcon: ({ focused, color }) => (
@@ -103,8 +103,8 @@ export default () => (
             SolidIcon={BookOpenSolid}
           />
         ),
-        headerTitle: "Subjects",
-        tabBarLabel: "Subjects",
+        headerTitle: "Courses",
+        tabBarLabel: "Courses",
       }}
     />
     <Tabs.Screen

@@ -1,8 +1,7 @@
 import CourseList from "@/features/course/components/CourseList";
-import React from "react";
 import { View } from "react-native";
 
-const SubjectsScreen = () => {
+const CoursesScreen = () => {
   return (
     <View>
       <CourseList />
@@ -10,4 +9,4 @@ const SubjectsScreen = () => {
   );
 };
 
-export default SubjectsScreen;
+export default CoursesScreen;

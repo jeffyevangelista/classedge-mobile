@@ -12,7 +12,7 @@ import {
   UsersIcon as UsersSolid,
 } from "react-native-heroicons/solid";
 
-const SubjectTabsLayout = () => {
+const CourseTabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
@@ -74,4 +74,4 @@ const SubjectTabsLayout = () => {
   );
 };
 
-export default SubjectTabsLayout;
+export default CourseTabsLayout;

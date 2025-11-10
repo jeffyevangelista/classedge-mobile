@@ -3,7 +3,7 @@ import React from "react";
 import { Pressable } from "react-native";
 import { InformationCircleIcon } from "react-native-heroicons/outline";
 
-const SubjectLayout = () => {
+const CourseLayout = () => {
   return (
     <Stack
       screenOptions={{
@@ -25,7 +25,7 @@ const SubjectLayout = () => {
           //   Platform.OS === "ios"
           //     ? ({ tintColor }) => (
           //         <BackButton
-          //           to="/(root)/(protected)/(tabs)/subjects/"
+          //           to="/(root)/(protected)/(tabs)/courses/"
           //           tintColor={tintColor}
           //         />
           //       )
@@ -35,7 +35,7 @@ const SubjectLayout = () => {
             return (
               <Pressable
                 onPress={() => {
-                  router.push("/subject/subject-details");
+                  router.push("/course/course-details");
                 }}
                 className=" w-10 h-10 rounded-full flex justify-center items-center"
               >
@@ -46,9 +46,9 @@ const SubjectLayout = () => {
         }}
       />
       <Stack.Screen
-        name="subject-details"
+        name="course-details"
         options={{
-          headerTitle: "Subject Details",
+          headerTitle: "Course Details",
           headerStyle: {
             backgroundColor: "#f9f9f9",
           },
@@ -58,4 +58,4 @@ const SubjectLayout = () => {
   );
 };
 
-export default SubjectLayout;
+export default CourseLayout;

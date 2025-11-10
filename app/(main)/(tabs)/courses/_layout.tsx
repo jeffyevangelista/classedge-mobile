@@ -3,7 +3,7 @@ import { Drawer } from "expo-router/drawer";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-const SubjectsLayout = () => {
+const CoursesLayout = () => {
   return (
     <GestureHandlerRootView>
       <Drawer
@@ -30,8 +30,8 @@ const SubjectsLayout = () => {
         <Drawer.Screen
           name="index"
           options={{
-            headerTitle: "Subjects",
-            drawerLabel: "Subjects",
+            headerTitle: "Courses",
+            drawerLabel: "Courses",
           }}
         />
         <Drawer.Screen
@@ -53,4 +53,4 @@ const SubjectsLayout = () => {
   );
 };
 
-export default SubjectsLayout;
+export default CoursesLayout;
