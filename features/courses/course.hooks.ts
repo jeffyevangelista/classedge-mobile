@@ -3,7 +3,7 @@ import {
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
-import { getCourse, getCourses } from "./course.apis";
+import { getCourse, getCourses } from "./courses.apis";
 
 export const useCourses = () => {
   return useInfiniteQuery({
