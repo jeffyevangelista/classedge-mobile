@@ -1,12 +1,3 @@
-import React from "react";
-import { Text, View } from "react-native";
+import MaterialsScreen from "@/screens/main/subject/tabs/MaterialsScreen";
 
-const index = () => {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  );
-};
-
-export default index;
+export default () => <MaterialsScreen />;

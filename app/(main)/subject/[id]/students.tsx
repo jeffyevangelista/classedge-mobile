@@ -1,12 +1,3 @@
-import React from "react";
-import { Text, View } from "react-native";
+import StudentsScreen from "@/screens/main/subject/tabs/StudentsScreen";
 
-const students = () => {
-  return (
-    <View>
-      <Text>students</Text>
-    </View>
-  );
-};
-
-export default students;
+export default () => <StudentsScreen />;

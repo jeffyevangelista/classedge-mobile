@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const activities = () => {
+const StudentsScreen = () => {
   return (
     <View>
-      <Text>activities</Text>
+      <Text>StudentsScreen</Text>
     </View>
   );
 };
 
-export default activities;
+export default StudentsScreen;
