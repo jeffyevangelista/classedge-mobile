@@ -1,10 +1,11 @@
+import StudentList from "@/features/students/components/StudentList";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const StudentsScreen = () => {
   return (
     <View>
-      <Text>StudentsScreen</Text>
+      <StudentList />
     </View>
   );
 };

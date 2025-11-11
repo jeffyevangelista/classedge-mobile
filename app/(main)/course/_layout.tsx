@@ -21,6 +21,7 @@ const CourseLayout = () => {
       <Stack.Screen
         name="[id]"
         options={{
+          headerShown: false,
           // headerLeft:
           //   Platform.OS === "ios"
           //     ? ({ tintColor }) => (
