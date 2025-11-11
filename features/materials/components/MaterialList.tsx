@@ -1,10 +1,9 @@
 import { Link, useGlobalSearchParams } from "expo-router";
-import { FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import { useMaterials } from "../materials.hooks";
 
 const MaterialList = () => {
   const { id } = useGlobalSearchParams();
-
   const {
     data,
     isLoading,
@@ -17,32 +16,31 @@ const MaterialList = () => {
     fetchNextPage,
   } = useMaterials(id as string);
 
-  if (isLoading) return <Text>loading...</Text>;
+  if (isLoading && !data) return <ActivityIndicator />;
   if (isError) return <Text>{error.message}</Text>;
 
   const materials = data?.pages.flatMap((page) => page.results) ?? [];
-  const showLoadingData = isLoading || (isError && data);
+
+  if (!isLoading && materials.length === 0)
+    return <Text>No materials found.</Text>;
 
   return (
     <FlatList
-      data={showLoadingData ? [] : materials}
+      data={materials}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <Link href={`/material/${item.id}`}>
+        <Link href={`/material/${item.id}`} asChild>
           <Text>{item.lesson_name}</Text>
         </Link>
       )}
-      ListFooterComponent={
-        showLoadingData || isFetchingNextPage ? <Text>loading...</Text> : null
-      }
+      ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       refreshing={isRefetching}
       onRefresh={refetch}
-      showsVerticalScrollIndicator={false}
       onEndReached={() => {
-        if (hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage();
       }}
       onEndReachedThreshold={0.5}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
