@@ -1,10 +1,11 @@
+import AssessmentList from "@/features/assessments/components/AssessmentList";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const AssessmentsScreen = () => {
   return (
     <View>
-      <Text>AssessmentsScreen</Text>
+      <AssessmentList />
     </View>
   );
 };
