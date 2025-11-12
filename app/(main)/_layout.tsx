@@ -25,8 +25,9 @@ export default function MainLayout() {
         />
         <Stack.Screen
           name="assessment/[id]/index"
-          options={{ headerShown: true, title: "Lesson" }}
+          options={{ headerShown: true, title: "Activity" }}
         />
+        <Stack.Screen name="announcements" />
       </Stack.Protected>
     </Stack>
   );
