@@ -31,19 +31,6 @@ const CourseLayout = () => {
           //         />
           //       )
           //     : undefined,
-          headerRight: ({ tintColor }) => {
-            const router = useRouter();
-            return (
-              <Pressable
-                onPress={() => {
-                  router.push("/course/course-details");
-                }}
-                className=" w-10 h-10 rounded-full flex justify-center items-center"
-              >
-                <InformationCircleIcon color={tintColor} size={28} />
-              </Pressable>
-            );
-          },
         }}
       />
       <Stack.Screen

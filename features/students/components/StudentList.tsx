@@ -1,10 +1,13 @@
+import { useTabScrollContext } from "@/contexts/TabScrollContext";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useStudents } from "../students.hooks";
 
 const StudentList = () => {
   const { id } = useGlobalSearchParams();
+  const { scrollY } = useTabScrollContext();
   const {
     data,
     isLoading,
@@ -17,6 +20,12 @@ const StudentList = () => {
     isRefetching,
   } = useStudents(id as string);
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
   if (isLoading) return <Text>Loading....</Text>;
   if (isError) return <Text>Error: {error.message}</Text>;
 
@@ -26,21 +35,22 @@ const StudentList = () => {
     return <Text>No students found.</Text>;
 
   return (
-    <View>
-      <FlatList
-        data={students}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-        refreshing={isRefetching}
-        onRefresh={refetch}
-        onEndReached={() => {
-          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-        }}
-        onEndReachedThreshold={0.5}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <Animated.FlatList
+      data={students}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => <Text className="border">{item.name}</Text>}
+      ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+      refreshing={isRefetching}
+      onRefresh={refetch}
+      onEndReached={() => {
+        if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+      }}
+      onEndReachedThreshold={0.5}
+      showsVerticalScrollIndicator={false}
+      onScroll={scrollHandler}
+      scrollEventThrottle={16}
+      contentContainerStyle={{ paddingTop: 16 }}
+    />
   );
 };
 

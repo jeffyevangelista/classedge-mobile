@@ -1,10 +1,13 @@
 import { Link, useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useAssessments } from "../assessments.hooks";
+import { useTabScrollContext } from "@/contexts/TabScrollContext";
 
 const AssessmentList = () => {
   const { id } = useGlobalSearchParams();
+  const { scrollY } = useTabScrollContext();
   const {
     data,
     isLoading,
@@ -17,6 +20,12 @@ const AssessmentList = () => {
     isRefetching,
   } = useAssessments(id as string);
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
   if (isLoading && !data) return <Text>Loading...</Text>;
   if (isError) return <Text>Error: {error.message}</Text>;
 
@@ -26,7 +35,7 @@ const AssessmentList = () => {
     return <Text>No assessments found.</Text>;
 
   return (
-    <FlatList
+    <Animated.FlatList
       data={assessments}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
@@ -42,6 +51,9 @@ const AssessmentList = () => {
       }}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
+      onScroll={scrollHandler}
+      scrollEventThrottle={16}
+      contentContainerStyle={{ paddingTop: 16 }}
     />
   );
 };

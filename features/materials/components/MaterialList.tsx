@@ -1,9 +1,12 @@
+import { useTabScrollContext } from "@/contexts/TabScrollContext";
 import { Link, useGlobalSearchParams } from "expo-router";
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
+import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useMaterials } from "../materials.hooks";
 
 const MaterialList = () => {
   const { id } = useGlobalSearchParams();
+  const { scrollY } = useTabScrollContext();
   const {
     data,
     isLoading,
@@ -16,6 +19,12 @@ const MaterialList = () => {
     fetchNextPage,
   } = useMaterials(id as string);
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
   if (isLoading && !data) return <ActivityIndicator />;
   if (isError) return <Text>{error.message}</Text>;
 
@@ -25,11 +34,15 @@ const MaterialList = () => {
     return <Text>No materials found.</Text>;
 
   return (
-    <FlatList
+    <Animated.FlatList
       data={materials}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <Link href={`/material/${item.id}`} asChild>
+        <Link
+          className="border mb-80 py-80"
+          href={`/material/${item.id}`}
+          asChild
+        >
           <Text>{item.lesson_name}</Text>
         </Link>
       )}
@@ -41,6 +54,9 @@ const MaterialList = () => {
       }}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
+      onScroll={scrollHandler}
+      scrollEventThrottle={16}
+      contentContainerStyle={{ paddingTop: 16 }}
     />
   );
 };
