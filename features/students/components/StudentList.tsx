@@ -1,9 +1,17 @@
+import {
+  Avatar,
+  AvatarFallbackText,
+  AvatarImage,
+} from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { HStack } from "@/components/ui/hstack";
 import { useTabScrollContext } from "@/contexts/TabScrollContext";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Text } from "react-native";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useStudents } from "../students.hooks";
+import { Student } from "../students.types";
 
 const StudentList = () => {
   const { id } = useGlobalSearchParams();
@@ -38,7 +46,7 @@ const StudentList = () => {
     <Animated.FlatList
       data={students}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => <Text className="border">{item.name}</Text>}
+      renderItem={({ item }) => <StudentItem {...item} />}
       ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       refreshing={isRefetching}
       onRefresh={refetch}
@@ -51,6 +59,26 @@ const StudentList = () => {
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingTop: 16 }}
     />
+  );
+};
+
+const StudentItem = ({ name, student_photo }: Student) => {
+  return (
+    <Card className="mt-2.5 w-full max-w-screen-xl mx-auto">
+      <HStack space={"md"} className="items-center">
+        <Avatar size="md">
+          <AvatarFallbackText>{name}</AvatarFallbackText>
+          <AvatarImage
+            source={{
+              uri: student_photo,
+            }}
+          />
+        </Avatar>
+        <Text className="text-neutral-900 font-poppins-regular text-lg flex-1">
+          {name}
+        </Text>
+      </HStack>
+    </Card>
   );
 };
 
