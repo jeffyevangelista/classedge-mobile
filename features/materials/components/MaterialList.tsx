@@ -77,16 +77,10 @@ const getLessonIcon = (lessonType: string) => {
 };
 
 const MaterialItem = ({
-  allow_download,
-  end_date,
   id,
-  lesson_description,
-  lesson_file,
   lesson_name,
   lesson_type,
-  lesson_url,
   start_date,
-  subject_id,
 }: Material) => {
   const { label } = getLessonIcon(lesson_type);
 
