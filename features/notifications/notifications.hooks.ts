@@ -27,7 +27,9 @@ export const useReadNotification = () => {
     mutationKey: ["read-notification"],
     mutationFn: (id: number) => readNotification(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      queryClient.invalidateQueries({
+        queryKey: ["notifications", "notification-count"],
+      });
     },
   });
 };
