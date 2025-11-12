@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { MaterialType } from "./materials.types";
+import { Material } from "./materials.types";
 
 export const getMaterials = async ({
   pageParam = 1,
@@ -11,12 +11,12 @@ export const getMaterials = async ({
   count: number;
   next: string | null;
   previous: string | null;
-  results: MaterialType[];
+  results: Material[];
 }> => {
   return (await api.get(`/subjects/${courseId}/lessons/?page=${pageParam}`))
     .data;
 };
 
-export const getMaterial = async (id: string): Promise<MaterialType> => {
+export const getMaterial = async (id: string): Promise<Material> => {
   return (await api.get(`/lessons/${id}/`)).data;
 };

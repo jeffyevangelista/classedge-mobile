@@ -1,11 +1,11 @@
+import Screen from "@/components/screen";
 import MaterialList from "@/features/materials/components/MaterialList";
-import { View } from "react-native";
 
 const MaterialsScreen = () => {
   return (
-    <View>
+    <Screen>
       <MaterialList />
-    </View>
+    </Screen>
   );
 };
 
