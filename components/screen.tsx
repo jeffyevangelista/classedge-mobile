@@ -14,7 +14,7 @@ export default function Screen({
   children,
   safeArea = false,
   className,
-  withPadding = true,
+  withPadding = false,
   ...props
 }: ScreenProps) {
   const combinedClasses = twMerge(
