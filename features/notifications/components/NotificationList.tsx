@@ -8,6 +8,7 @@ import { HStack } from "@/components/ui/hstack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
 import { useTimeAgo } from "@/hooks/useTimeAgo";
+import { Link } from "expo-router";
 import React, { useMemo } from "react";
 import { FlatList, Pressable, Text } from "react-native";
 import { useNotifications, useReadNotification } from "../notifications.hooks";
@@ -50,50 +51,50 @@ const NotificationItem = ({
   };
 
   return (
-    // <Link
-    //   href={
-    //     entity_type === "activity"
-    //       ? `/(root)/(protected)/activity/${entity_id}`
-    //       : `/(root)/(protected)/lesson/${entity_id}`
-    //   }
-    //   asChild
-    // >
-    <Pressable
-      onPress={handleReadNotification}
-      disabled={isPending}
-      accessibilityRole="button"
-      accessibilityLabel={`${message} - ${timeAgo}`}
-      accessibilityState={{ busy: isPending, disabled: isPending }}
-      className="active:opacity-70"
+    <Link
+      href={
+        entity_type === "activity"
+          ? `/assessment/${entity_id}`
+          : `/material/${entity_id}`
+      }
+      asChild
     >
-      <Card
-        className={`rounded-xl w-full max-w-screen-xl mx-auto p-3 mb-1 ${
-          is_read ? "bg-[#f9f9f9]" : "bg-primary-50"
-        }`}
+      <Pressable
+        onPress={handleReadNotification}
+        disabled={isPending}
+        accessibilityRole="button"
+        accessibilityLabel={`${message} - ${timeAgo}`}
+        accessibilityState={{ busy: isPending, disabled: isPending }}
+        className="active:opacity-70"
       >
-        <HStack space={"md"} className="items-start">
-          <Avatar>
-            <AvatarFallbackText>{created_by}</AvatarFallbackText>
-            <AvatarImage source={{ uri: created_by_photo }} />
-          </Avatar>
-          <VStack className="flex-1 h-full">
-            <Text
-              className={` leading-tight ${
-                is_read
-                  ? "text-gray-700"
-                  : "text-gray-900 font-poppins-semibold"
-              }`}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {message}
-            </Text>
-            <Text className="text-xs text-neutral-500 mt-1">{timeAgo}</Text>
-          </VStack>
-        </HStack>
-      </Card>
-    </Pressable>
-    // </Link>
+        <Card
+          className={`rounded-xl w-full max-w-screen-xl mx-auto p-3 mb-1 ${
+            is_read ? "bg-[#f9f9f9]" : "bg-primary-50"
+          }`}
+        >
+          <HStack space={"md"} className="items-start">
+            <Avatar>
+              <AvatarFallbackText>{created_by}</AvatarFallbackText>
+              <AvatarImage source={{ uri: created_by_photo }} />
+            </Avatar>
+            <VStack className="flex-1 h-full">
+              <Text
+                className={` leading-tight ${
+                  is_read
+                    ? "text-gray-700"
+                    : "text-gray-900 font-poppins-semibold"
+                }`}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {message}
+              </Text>
+              <Text className="text-xs text-neutral-500 mt-1">{timeAgo}</Text>
+            </VStack>
+          </HStack>
+        </Card>
+      </Pressable>
+    </Link>
   );
 };
 
