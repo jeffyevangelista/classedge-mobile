@@ -1,11 +1,12 @@
+import Screen from "@/components/screen";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 const CoilScreen = () => {
   return (
-    <View>
+    <Screen>
       <Text>CoilScreen</Text>
-    </View>
+    </Screen>
   );
 };
 

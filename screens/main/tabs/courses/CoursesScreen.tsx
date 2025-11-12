@@ -1,11 +1,11 @@
+import Screen from "@/components/screen";
 import CourseList from "@/features/courses/components/CourseList";
-import { View } from "react-native";
 
 const CoursesScreen = () => {
   return (
-    <View>
+    <Screen>
       <CourseList />
-    </View>
+    </Screen>
   );
 };
 

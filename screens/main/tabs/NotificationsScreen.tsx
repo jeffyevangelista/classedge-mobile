@@ -1,10 +1,11 @@
+import NotificationList from "@/features/notifications/components/NotificationList";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const NotificationsScreen = () => {
   return (
-    <View>
-      <Text>NotificationsScreen</Text>
+    <View className="bg-[#f9f9f9] h-full ">
+      <NotificationList />
     </View>
   );
 };
