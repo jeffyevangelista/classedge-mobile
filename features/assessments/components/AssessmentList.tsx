@@ -1,9 +1,10 @@
-import { Link, useGlobalSearchParams } from "expo-router";
+import { useTabScrollContext } from "@/contexts/TabScrollContext";
+import { useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Text } from "react-native";
 import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useAssessments } from "../assessments.hooks";
-import { useTabScrollContext } from "@/contexts/TabScrollContext";
+import AssessmentItem from "./Assessment";
 
 const AssessmentList = () => {
   const { id } = useGlobalSearchParams();
@@ -38,11 +39,7 @@ const AssessmentList = () => {
     <Animated.FlatList
       data={assessments}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <Link href={`/assessment/${item.id}`}>
-          <Text>{item.activity_name}</Text>
-        </Link>
-      )}
+      renderItem={({ item }) => <AssessmentItem {...item} />}
       ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       refreshing={isRefetching}
       onRefresh={refetch}

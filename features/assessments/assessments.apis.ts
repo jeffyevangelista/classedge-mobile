@@ -1,4 +1,5 @@
 import api from "@/lib/axios";
+import { Assessment } from "./assessments.types";
 
 export const getAssessments = async ({
   pageParam,
@@ -10,7 +11,7 @@ export const getAssessments = async ({
   count: number;
   next: string | null;
   previous: string | null;
-  results: any;
+  results: Assessment[];
 }> => {
   return (await api.get(`/subjects/${courseId}/activities/?page=${pageParam}`))
     .data;
@@ -18,4 +19,17 @@ export const getAssessments = async ({
 
 export const getAssessment = async (courseId: string): Promise<any> => {
   return (await api.get(`/activities/${courseId}/`)).data;
+};
+
+export const getPendingAssessments = async ({
+  pageParam = 1,
+}: {
+  pageParam: number;
+}): Promise<{
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Assessment[];
+}> => {
+  return (await api.get(`/activities/pending/?page=${pageParam}`)).data;
 };
