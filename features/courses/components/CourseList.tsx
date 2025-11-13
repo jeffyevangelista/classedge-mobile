@@ -62,7 +62,7 @@ const Subject = ({
   return (
     <Link href={`/course/${id}`} asChild>
       <Pressable className="w-full max-w-screen-md mx-auto">
-        <Card className="border-2 border-neutral-100  mb-5 rounded-3xl p-0 overflow-hidden">
+        <Card className="border-2 border-neutral-100  mb-2.5 rounded-3xl p-0 overflow-hidden">
           <Box className="relative h-40 w-full">
             <Image
               source={

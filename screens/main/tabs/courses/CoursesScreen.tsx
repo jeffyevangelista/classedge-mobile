@@ -3,7 +3,7 @@ import CourseList from "@/features/courses/components/CourseList";
 
 const CoursesScreen = () => {
   return (
-    <Screen>
+    <Screen className="px-5 md:px-0">
       <CourseList />
     </Screen>
   );

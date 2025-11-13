@@ -1,12 +1,12 @@
+import Screen from "@/components/screen";
 import CourseDetails from "@/features/courses/components/CourseDetails";
 import React from "react";
-import { View } from "react-native";
 
 const CourseDetailsScreen = () => {
   return (
-    <View>
+    <Screen withPadding>
       <CourseDetails />
-    </View>
+    </Screen>
   );
 };
 
