@@ -15,7 +15,17 @@ import { useNotifications, useReadNotification } from "../notifications.hooks";
 import type { Notification } from "../notifications.types";
 
 const NotificationList = () => {
-  const { data, isLoading, isError, error } = useNotifications();
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useNotifications();
 
   if (isLoading) return <NotificationSkeletons />;
   if (isError) return <Text>{error.message}</Text>;
@@ -27,7 +37,19 @@ const NotificationList = () => {
   return (
     <FlatList
       data={notifications}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => <NotificationItem {...item} />}
+      onEndReached={() => {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      onRefresh={refetch}
+      refreshing={isRefetching}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={
+        isFetchingNextPage ? <NotificationSkeletons /> : null
+      }
     />
   );
 };
