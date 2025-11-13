@@ -1,3 +1,4 @@
+import { Badge, BadgeText } from "@/components/ui/badge";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
 import { HStack } from "@/components/ui/hstack";
@@ -40,12 +41,29 @@ const AssessmentItem = ({
 
   const formattedDate = end_time ? useFormattedDate(end_time, true) : null;
 
+  // Calculate urgency
+  const getUrgency = () => {
+    if (!end_time) return null;
+    const now = new Date();
+    const dueDate = new Date(end_time);
+    const hoursUntilDue =
+      (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+    if (hoursUntilDue < 0) return { label: "Overdue", color: "text-red-600" };
+    if (hoursUntilDue < 24)
+      return { label: "Due today", color: "text-orange-600" };
+    return null;
+  };
+
+  const urgency = getUrgency();
+
   return (
     <Link
       href={`/assessment/${id}`}
       className="max-w-screen-xl mx-auto w-full mt-2.5"
+      asChild
     >
-      <Card className="rounded-lg mb-2.5 flex-row items-center">
+      <Card className="rounded-lg mb-2.5 flex-row items-center active:bg-orange-50/50">
         <HStack space="md" className="flex-1">
           <Box className={"rounded-full p-2.5 bg-orange-50"}>
             <Icon
@@ -61,13 +79,32 @@ const AssessmentItem = ({
             >
               {label}: {activity_name}
             </Text>
-            <Text
-              className="text-neutral-500 text-xs"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              Due {formattedDate}
-            </Text>
+            <HStack space="xs" className="items-center">
+              <Text
+                className="text-neutral-500 text-xs"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                Due {formattedDate}
+              </Text>
+              {urgency && (
+                <Badge
+                  size="sm"
+                  variant="solid"
+                  className={
+                    urgency.color === "text-red-600"
+                      ? "bg-red-100"
+                      : "bg-orange-100"
+                  }
+                >
+                  <BadgeText
+                    className={`${urgency.color} text-2xs font-poppins-semibold`}
+                  >
+                    {urgency.label}
+                  </BadgeText>
+                </Badge>
+              )}
+            </HStack>
           </VStack>
         </HStack>
       </Card>

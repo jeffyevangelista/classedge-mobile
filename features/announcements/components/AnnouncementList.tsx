@@ -51,7 +51,13 @@ const AnnouncementList = () => {
   );
 };
 
-const AnnouncementItem = ({ date, id, title }: Announcement) => {
+const AnnouncementItem = ({
+  date,
+  id,
+  title,
+  description,
+  type,
+}: Announcement) => {
   return (
     <Card
       key={id}
@@ -62,11 +68,11 @@ const AnnouncementItem = ({ date, id, title }: Announcement) => {
       </Text>
 
       <Text className="text-sm font-poppins-regular text-neutral-500">
-        {title}
+        {description}
       </Text>
 
       <Text className="text-xs font-poppins-medium text-neutral-400">
-        Posted{" "}
+        {type} • Posted{" "}
         {new Date(date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",

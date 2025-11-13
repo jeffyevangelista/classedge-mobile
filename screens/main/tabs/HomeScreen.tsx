@@ -16,7 +16,7 @@ const HomeScreen = () => {
       <ScrollView>
         <Box className="w-full mx-auto max-w-screen-xl gap-5">
           <Grid
-            className="gap-5 px-5"
+            className="gap-2.5 px-5"
             _extra={{
               className: "grid-cols-2",
             }}
@@ -29,8 +29,9 @@ const HomeScreen = () => {
             </GridItem>
           </Grid>
 
-          <Box className="mx-5 gap-2.5 bg-orange-50 p-5 rounded-xl">
+          <Box className="mx-5 gap-2.5 bg-orange-50 p-5 rounded-xl border border-orange-200">
             <Heading size={"md"}>Pending Submissions</Heading>
+
             <PendingAssessmentList />
           </Box>
           <Box className="md:mx-5">
