@@ -31,25 +31,10 @@ const getActivityIcon = (activityType: string) => {
 };
 
 const AssessmentItem = ({
-  activity_instruction,
   activity_name,
-  activity_type,
   activity_type_name,
-  classroom_mode,
   end_time,
   id,
-  lesson_urls,
-  max_retake,
-  max_score,
-  passing_score,
-  passing_score_type,
-  retake_method,
-  show_score,
-  shuffle_questions,
-  start_time,
-  student_retake_count,
-  subject_id,
-  time_duration,
 }: Assessment) => {
   const { label } = getActivityIcon(activity_type_name);
 

@@ -1,3 +1,4 @@
+import ErrorFallback from "@/components/error-fallback";
 import {
   Avatar,
   AvatarFallbackText,
@@ -10,7 +11,7 @@ import { VStack } from "@/components/ui/vstack";
 import { useTimeAgo } from "@/hooks/useTimeAgo";
 import { Link } from "expo-router";
 import React, { useMemo } from "react";
-import { FlatList, Pressable, Text } from "react-native";
+import { ActivityIndicator, FlatList, Pressable, Text } from "react-native";
 import { useNotifications, useReadNotification } from "../notifications.hooks";
 import type { Notification } from "../notifications.types";
 
@@ -27,8 +28,15 @@ const NotificationList = () => {
     isFetchingNextPage,
   } = useNotifications();
 
-  if (isLoading) return <NotificationSkeletons />;
-  if (isError) return <Text>{error.message}</Text>;
+  if (isLoading) return <ActivityIndicator />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const notifications = data?.pages.flatMap((page) => page.results) ?? [];
 

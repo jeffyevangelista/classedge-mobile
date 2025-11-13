@@ -1,12 +1,11 @@
+import Screen from "@/components/screen";
 import MaterialDetails from "@/features/materials/components/MaterialDetails";
-import React from "react";
-import { View } from "react-native";
 
 const MaterialDetailsScreen = () => {
   return (
-    <View>
+    <Screen withPadding>
       <MaterialDetails />
-    </View>
+    </Screen>
   );
 };
 

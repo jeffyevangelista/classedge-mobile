@@ -17,7 +17,7 @@ export const getAssessments = async ({
     .data;
 };
 
-export const getAssessment = async (courseId: string): Promise<any> => {
+export const getAssessment = async (courseId: string): Promise<Assessment> => {
   return (await api.get(`/activities/${courseId}/`)).data;
 };
 

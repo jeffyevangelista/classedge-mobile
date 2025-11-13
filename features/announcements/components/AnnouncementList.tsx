@@ -1,3 +1,4 @@
+import ErrorFallback from "@/components/error-fallback";
 import { Card } from "@/components/ui/card";
 import React from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
@@ -17,8 +18,15 @@ const AnnouncementList = () => {
     isRefetching,
   } = useAnnouncements();
 
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <ActivityIndicator />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const announcements = data?.pages.flatMap((page) => page.results) ?? [];
 

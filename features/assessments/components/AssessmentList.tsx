@@ -1,4 +1,10 @@
+import { Card } from "@/components/ui/card";
+import { HStack } from "@/components/ui/hstack";
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
+import { VStack } from "@/components/ui/vstack";
 import { useTabScrollContext } from "@/contexts/TabScrollContext";
+
+import ErrorFallback from "@/components/error-fallback";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Text } from "react-native";
@@ -27,8 +33,15 @@ const AssessmentList = () => {
     },
   });
 
-  if (isLoading && !data) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <AssessmentSkeleton />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const assessments = data?.pages.flatMap((page) => page.results) ?? [];
 
@@ -52,6 +65,27 @@ const AssessmentList = () => {
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingTop: 16 }}
     />
+  );
+};
+
+const AssessmentSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Card
+          key={index}
+          className="rounded-lg mb-2.5 flex-row max-w-screen-md mx-auto w-full gap-2.5 items-center"
+        >
+          <HStack space="md" className="flex-1">
+            <Skeleton speed={1} className="rounded-md h-16 w-16" />
+            <VStack className="flex-1" space="sm">
+              <SkeletonText speed={4} _lines={2} className="h-5 rounded-full" />
+              <SkeletonText speed={3} className="h-3 w-24 rounded-full" />
+            </VStack>
+          </HStack>
+        </Card>
+      ))}
+    </>
   );
 };
 

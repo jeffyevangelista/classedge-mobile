@@ -1,3 +1,4 @@
+import ErrorFallback from "@/components/error-fallback";
 import {
   Avatar,
   AvatarFallbackText,
@@ -34,8 +35,15 @@ const StudentList = () => {
     },
   });
 
-  if (isLoading) return <Text>Loading....</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <ActivityIndicator />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const students = data?.pages.flatMap((page) => page.results) ?? [];
 

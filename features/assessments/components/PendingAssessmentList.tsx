@@ -1,12 +1,22 @@
+import ErrorFallback from "@/components/error-fallback";
 import React from "react";
-import { FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import { usePendingAssessments } from "../assessments.hooks";
 import AssessmentItem from "./Assessment";
 
 const PendingAssessmentList = () => {
-  const { data, isLoading, isError, error } = usePendingAssessments();
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    usePendingAssessments();
+  if (isLoading) return <ActivityIndicator />;
+
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const assessments = data?.pages.flatMap((page) => page.results) ?? [];
 

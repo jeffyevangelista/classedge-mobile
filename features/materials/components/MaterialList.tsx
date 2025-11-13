@@ -1,7 +1,9 @@
+import ErrorFallback from "@/components/error-fallback";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
 import { HStack } from "@/components/ui/hstack";
 import { Icon } from "@/components/ui/icon";
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
 import { useTabScrollContext } from "@/contexts/TabScrollContext";
 import { useFormattedDate } from "@/hooks/useFormattedDate";
@@ -33,8 +35,15 @@ const MaterialList = () => {
     },
   });
 
-  if (isLoading && !data) return <ActivityIndicator />;
-  if (isError) return <Text>{error.message}</Text>;
+  if (isLoading && !data) return <MaterialsSkeleton />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={() => refetch()}
+        isRefetching={isRefetching}
+      />
+    );
 
   const materials = data?.pages.flatMap((page) => page.results) ?? [];
 
@@ -118,6 +127,28 @@ const MaterialItem = ({
         </HStack>
       </Card>
     </Link>
+  );
+};
+
+const MaterialsSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Card
+          key={index}
+          className="rounded-lg mb-2.5 flex-row max-w-screen-md mx-auto w-full gap-2.5 items-center"
+        >
+          <HStack space="md" className="flex-1">
+            <Skeleton speed={1} className="rounded-md h-16 w-16" />
+
+            <VStack className="flex-1" space="sm">
+              <SkeletonText speed={4} _lines={2} className="h-5 rounded-full" />
+              <SkeletonText speed={3} className="h-3 w-24 rounded-full" />
+            </VStack>
+          </HStack>
+        </Card>
+      ))}
+    </>
   );
 };
 

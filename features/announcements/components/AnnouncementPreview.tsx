@@ -1,14 +1,22 @@
+import ErrorFallback from "@/components/error-fallback";
 import { Card } from "@/components/ui/card";
 import React from "react";
-import { FlatList, Text } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import { useAnnouncementsPreview } from "../announcements.hooks";
 
 const AnnouncementPreview = () => {
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useAnnouncementsPreview();
 
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <ActivityIndicator />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const announcements = data?.results ?? [];
 

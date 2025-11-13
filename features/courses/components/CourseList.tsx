@@ -1,6 +1,9 @@
+import ErrorFallback from "@/components/error-fallback";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { Link } from "expo-router";
 import React from "react";
 import { FlatList, Image, Pressable, Text } from "react-native";
@@ -20,8 +23,15 @@ const CourseList = () => {
     isFetchingNextPage,
   } = useCourses();
 
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <CoursesSkeleton />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={() => refetch()}
+        isRefetching={isRefetching}
+      />
+    );
 
   const courses = data?.pages.flatMap((page) => page.results) ?? [];
 
@@ -37,7 +47,7 @@ const CourseList = () => {
         }
       }}
       onEndReachedThreshold={0.5}
-      ListFooterComponent={isFetchingNextPage ? <Text>Loading...</Text> : null}
+      ListFooterComponent={isFetchingNextPage ? <CoursesSkeleton /> : null}
     />
   );
 };
@@ -45,13 +55,9 @@ const CourseList = () => {
 const Subject = ({
   id,
   room_number,
-  subject_code,
-  subject_description,
   subject_name,
   subject_photo,
-  teacher_email,
   teacher_name,
-  teacher_photo,
 }: Course) => {
   return (
     <Link href={`/course/${id}`} asChild>
@@ -85,6 +91,45 @@ const Subject = ({
         </Card>
       </Pressable>
     </Link>
+  );
+};
+
+const CoursesSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Card
+          key={index}
+          className="shadow mb-5 rounded-lg p-0 overflow-hidden w-full max-w-screen-md mx-auto"
+        >
+          <Box className="relative h-40 w-full">
+            <Skeleton speed={4} className="object-cover w-full h-full" />
+          </Box>
+          <Box className="p-4 gap-4">
+            <Box className="gap-2">
+              <SkeletonText
+                speed={3}
+                className={
+                  "rounded-full h-6 w-full text-slate-900 font-semibold"
+                }
+              />
+              <SkeletonText
+                speed={2}
+                className="rounded-full h-2 w-24 text-typography-500"
+              />
+            </Box>
+
+            <HStack space="md">
+              <Skeleton speed={4} className="rounded-full w-12 h-12" />
+              <SkeletonText
+                speed={3}
+                className="rounded-full h-3 w-24 my-auto"
+              />
+            </HStack>
+          </Box>
+        </Card>
+      ))}
+    </>
   );
 };
 
