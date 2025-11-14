@@ -1,12 +1,12 @@
-import Screen from "@/components/screen";
+import CalendarComponent from "@/features/calendar/components/CalendarComponent";
 import React from "react";
-import { Text } from "react-native";
+import { View } from "react-native";
 
 const CalendarScreen = () => {
   return (
-    <Screen>
-      <Text>CalendarScreen</Text>
-    </Screen>
+    <View>
+      <CalendarComponent />
+    </View>
   );
 };
 
