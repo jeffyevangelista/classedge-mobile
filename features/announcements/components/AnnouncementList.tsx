@@ -1,4 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Card } from "@/components/ui/card";
 import React from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
@@ -31,7 +32,7 @@ const AnnouncementList = () => {
   const announcements = data?.pages.flatMap((page) => page.results) ?? [];
 
   if (!isLoading && announcements.length === 0)
-    return <Text>No announcements found.</Text>;
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <FlatList

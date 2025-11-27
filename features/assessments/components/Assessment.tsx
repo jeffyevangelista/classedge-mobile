@@ -60,7 +60,7 @@ const AssessmentItem = ({
   return (
     <Link
       href={`/assessment/${id}`}
-      className="max-w-screen-xl mx-auto w-full mt-2.5"
+      className="max-w-screen-xl mx-auto w-full"
       asChild
     >
       <Card className="rounded-lg mb-2.5 flex-row items-center active:bg-orange-50/50">
@@ -97,9 +97,7 @@ const AssessmentItem = ({
                       : "bg-orange-100"
                   }
                 >
-                  <BadgeText
-                    className={`${urgency.color} text-2xs font-poppins-semibold`}
-                  >
+                  <BadgeText className={`${urgency.color} text-2xs`}>
                     {urgency.label}
                   </BadgeText>
                 </Badge>

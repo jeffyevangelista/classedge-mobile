@@ -43,7 +43,7 @@ export function buildMarkedDates(data: CalendarItem[]): MarkedDates {
         startingDay: isStart,
         endingDay: isEnd,
         color,
-        textColor: "white",
+        textColor: "black",
       };
 
       cursor = addDays(cursor, 1);
@@ -62,12 +62,12 @@ export function buildMarkedDates(data: CalendarItem[]): MarkedDates {
           ...(marks[start_date] || {}),
           startingDay: true,
           endingDay: true,
-          color: "#50cebb",
-          textColor: "white",
+          color: "#96f7e4",
+          textColor: "black",
         };
       } else {
         // Range event
-        addRange(start_date, end_date, "#50cebb");
+        addRange(start_date, end_date, "#96f7e4");
       }
     }
 

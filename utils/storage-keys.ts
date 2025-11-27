@@ -2,6 +2,7 @@ export const ASYNC_STORAGE_KEYS = {
   AUTH_USER: "authUser",
   HAS_SEEN_INTRO: "hasSeenIntro",
   EXPIRES_AT: "expiresAt",
+  ATTEMPT: "attempt",
 } as const;
 
 export type AsyncStorageKey =

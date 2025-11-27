@@ -2,12 +2,12 @@ import Screen from "@/components/screen";
 import React from "react";
 import { Text } from "react-native";
 
-const MessagesScreen = () => {
+const AcademicRecordsScreen = () => {
   return (
     <Screen>
-      <Text>MessagesScreen</Text>
+      <Text>AcademicRecordsScreen</Text>
     </Screen>
   );
 };
 
-export default MessagesScreen;
+export default AcademicRecordsScreen;

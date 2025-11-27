@@ -1,4 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
@@ -34,6 +35,9 @@ const CourseList = () => {
     );
 
   const courses = data?.pages.flatMap((page) => page.results) ?? [];
+
+  if (!isLoading && courses.length === 0)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <FlatList

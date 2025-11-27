@@ -1,10 +1,11 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
 import { Card } from "@/components/ui/card";
-import { Icon } from "@/components/ui/icon";
+import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
+import { VStack } from "@/components/ui/vstack";
 import React from "react";
-import { ActivityIndicator, Text, useWindowDimensions } from "react-native";
-import { BellIcon } from "react-native-heroicons/outline";
+import { Text, useWindowDimensions } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useAnnouncementsPreview } from "../announcements.hooks";
 
@@ -12,9 +13,29 @@ const AnnouncementPreview = () => {
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useAnnouncementsPreview();
   const { width } = useWindowDimensions();
-  const cardWidth = Math.min(384, (width ?? 0) - 40); // 384px = w-96, with 40px padding
 
-  if (isLoading) return <ActivityIndicator />;
+  // Responsive card width: scales from mobile to tablet/desktop
+  // Mobile: width - 40px padding
+  // Tablet: 70% of screen width
+  // Desktop: max 600px
+  const getCardWidth = () => {
+    const screenWidth = width ?? 0;
+    if (screenWidth < 768) {
+      return screenWidth - 40; // Mobile: full width minus padding
+    } else if (screenWidth < 1024) {
+      return Math.min(screenWidth * 0.7, 600); // Tablet: 70% of width
+    } else {
+      return 600; // Desktop: fixed max width
+    }
+  };
+
+  const cardWidth = getCardWidth();
+  const cardHeight = Math.max(180, Math.min(cardWidth * 0.5, 240)); // Responsive height
+
+  if (isLoading)
+    return (
+      <AnnouncementSkeleton cardWidth={cardWidth} cardHeight={cardHeight} />
+    );
   if (isError)
     return (
       <ErrorFallback
@@ -27,22 +48,13 @@ const AnnouncementPreview = () => {
   const announcements = data?.results ?? [];
 
   if (!isLoading && announcements.length === 0)
-    return (
-      <Box className="items-center justify-center py-8 px-5">
-        <Box className="bg-neutral-100 p-4 rounded-full mb-3">
-          <Icon as={BellIcon} className="h-8 w-8 text-neutral-400" />
-        </Box>
-        <Text className="text-neutral-500 font-poppins-regular text-sm">
-          No announcements at the moment
-        </Text>
-      </Box>
-    );
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <Carousel
       loop
       width={cardWidth}
-      height={200}
+      height={cardHeight}
       autoPlay={true}
       autoPlayInterval={5000}
       data={announcements}
@@ -91,6 +103,37 @@ const AnnouncementPreview = () => {
         </Card>
       )}
     />
+  );
+};
+
+const AnnouncementSkeleton = ({
+  cardWidth,
+  cardHeight,
+}: {
+  cardWidth: number;
+  cardHeight: number;
+}) => {
+  return (
+    <Box
+      style={{
+        width: cardWidth,
+        height: cardHeight,
+        marginHorizontal: "auto",
+      }}
+    >
+      <Card
+        className="rounded-xl gap-2.5 p-5 border border-neutral-200"
+        style={{ width: cardWidth - 10, height: cardHeight - 10 }}
+      >
+        <VStack space="md" className="flex-1">
+          <Skeleton className="h-8 w-3/4 rounded-md" />
+          <VStack space="sm" className="flex-1">
+            <SkeletonText _lines={3} className="h-4" />
+          </VStack>
+          <Skeleton className="h-4 w-1/3 rounded-md" />
+        </VStack>
+      </Card>
+    </Box>
   );
 };
 

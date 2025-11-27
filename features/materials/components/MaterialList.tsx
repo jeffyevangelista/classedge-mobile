@@ -5,18 +5,18 @@ import { HStack } from "@/components/ui/hstack";
 import { Icon } from "@/components/ui/icon";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
-import { useTabScrollContext } from "@/contexts/TabScrollContext";
+
+import NoDataFallback from "@/components/no-data-fallback";
 import { useFormattedDate } from "@/hooks/useFormattedDate";
 import { Link, useGlobalSearchParams } from "expo-router";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import { DocumentTextIcon } from "react-native-heroicons/outline";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useMaterials } from "../materials.hooks";
 import { Material } from "../materials.types";
 
 const MaterialList = () => {
   const { id } = useGlobalSearchParams();
-  const { scrollY } = useTabScrollContext();
+
   const {
     data,
     isLoading,
@@ -28,12 +28,6 @@ const MaterialList = () => {
     isFetchingNextPage,
     fetchNextPage,
   } = useMaterials(id as string);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
 
   if (isLoading && !data) return <MaterialsSkeleton />;
   if (isError)
@@ -48,10 +42,12 @@ const MaterialList = () => {
   const materials = data?.pages.flatMap((page) => page.results) ?? [];
 
   if (!isLoading && materials.length === 0)
-    return <Text>No materials found.</Text>;
+    return (
+      <NoDataFallback isRefetching={isRefetching} refetch={() => refetch()} />
+    );
 
   return (
-    <Animated.FlatList
+    <FlatList
       data={materials}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => <MaterialItem {...item} />}
@@ -63,7 +59,6 @@ const MaterialList = () => {
       }}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
-      onScroll={scrollHandler}
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingTop: 16 }}
     />

@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { Assessment } from "./assessments.types";
+import { Assessment, Question } from "./assessments.types";
 
 export const getAssessments = async ({
   pageParam,
@@ -32,4 +32,33 @@ export const getPendingAssessments = async ({
   results: Assessment[];
 }> => {
   return (await api.get(`/activities/pending/?page=${pageParam}`)).data;
+};
+
+export const startAssessmentAttempt = async (assessmentId: string) => {
+  return (await api.post(`/activities/${assessmentId}/attempt/start/`)).data;
+};
+
+export const getAssessmentAttempt = async (attemptId: string) => {
+  return (await api.get(`/attempts/${attemptId}/`)).data;
+};
+
+export const getAssessmentQuestions = async (
+  assessmentId: string
+): Promise<{
+  questions: Question[];
+  started_at: string;
+  will_end_at: string;
+  time_remaining_seconds: number;
+}> => {
+  return (await api.get(`/activities/${assessmentId}/questions/`)).data;
+};
+
+export const autoSaveAttempt = async (payload: any) => {
+  return (
+    await api.post(`/activities/${payload.activityId}/autosave/`, payload)
+  ).data;
+};
+
+export const submitAssessmentAnswers = async (payload: any) => {
+  return await api.post(`/activities/${payload.activityId}/submit/`, payload);
 };

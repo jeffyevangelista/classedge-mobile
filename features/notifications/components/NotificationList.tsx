@@ -1,4 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import {
   Avatar,
   AvatarFallbackText,
@@ -40,7 +41,8 @@ const NotificationList = () => {
 
   const notifications = data?.pages.flatMap((page) => page.results) ?? [];
 
-  if (notifications.length === 0) return <Text>No notifications found.</Text>;
+  if (notifications.length === 0)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <FlatList

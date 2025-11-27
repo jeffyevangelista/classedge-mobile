@@ -1,4 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import {
   Avatar,
   AvatarFallbackText,
@@ -17,7 +18,9 @@ import { useCourse } from "../courses.hooks";
 
 const CourseDetails = () => {
   const { id } = useGlobalSearchParams();
-  const { isLoading, data, isError, error } = useCourse(id as string);
+  const { isLoading, data, isError, error, refetch, isRefetching } = useCourse(
+    id as string
+  );
 
   if (isLoading)
     return <CourseDetailSkeleton isRefetching={false} refetch={() => {}} />;
@@ -25,12 +28,13 @@ const CourseDetails = () => {
     return (
       <ErrorFallback
         error={error.message}
-        refetch={() => {}}
-        isRefetching={false}
+        refetch={refetch}
+        isRefetching={isRefetching}
       />
     );
 
-  if (!data) return <Text>No Data found</Text>;
+  if (!data)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <Box className="w-full mx-auto max-w-screen-md gap-5">

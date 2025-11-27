@@ -1,29 +1,41 @@
 import ErrorFallback from "@/components/error-fallback";
 import FileRenderer from "@/components/file-renderer";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
-import { Button, ButtonText } from "@/components/ui/button";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { useFormattedDate } from "@/hooks/useFormattedDate";
-import { useGlobalSearchParams, useRouter } from "expo-router";
+import useStore from "@/lib/store";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { RefreshControl, ScrollView, Text } from "react-native";
-import { useAssessment } from "../assessments.hooks";
+import { toast } from "sonner-native";
+import {
+  useAssessment,
+  useGetAssessmentAttempt,
+  useStartAssessmentAttempt,
+} from "../assessments.hooks";
+import AssessmentAttempts from "./AssessmentAttempts";
 
 const AssessmentDetails = () => {
+  const { setAttempt } = useStore();
   const router = useRouter();
-  const { id } = useGlobalSearchParams();
+  const { id } = useLocalSearchParams();
   const { isLoading, isError, error, data, refetch, isRefetching } =
     useAssessment(id as string);
-
-  const formattedDate = data?.end_time
-    ? useFormattedDate(data.end_time, true)
-    : null;
-
+  const attemptId = data?.ongoing_attempt?.id?.toString();
+  const {
+    data: attempt,
+    isLoading: attemptLoading,
+    error: attemptError,
+  } = useGetAssessmentAttempt(attemptId);
+  const { mutateAsync: startAttempt, isPending } = useStartAssessmentAttempt();
   if (isLoading)
     return (
       <LoadingComponent isRefetching={isLoading} refetch={() => refetch()} />
     );
+
   if (isError)
     return (
       <ErrorFallback
@@ -33,7 +45,81 @@ const AssessmentDetails = () => {
       />
     );
 
-  if (!data) return <Text>No Data found</Text>;
+  if (!data)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
+
+  const ongoing = data.ongoing_attempt;
+  const isPastDue = data.end_time
+    ? new Date(data.end_time) < new Date()
+    : false;
+  const isOutOfAttempts = data.remaining_attempts === 0;
+  const hasSubmittedAttempts = data.attempts.some(
+    (a) => a.status === "submitted"
+  );
+  const canViewScore = data.show_score && hasSubmittedAttempts;
+
+  const handleStart = async () => {
+    try {
+      const attempt = await startAttempt(id as string);
+
+      setAttempt(attempt);
+      router.push(`/(main)/assessment/${id}/take-activity`);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to start assessment attempt");
+    }
+  };
+
+  const handleResume = () => {
+    if (attemptLoading) return;
+
+    if (attemptError) {
+      toast.error(
+        (attemptError as any)?.message || "Failed to fetch assessment attempt"
+      );
+      return;
+    }
+
+    if (!attempt) {
+      toast.error("Assessment attempt not found");
+      return;
+    }
+
+    setAttempt(attempt);
+    console.log({ attempt: attempt });
+
+    router.push(`/(main)/assessment/${id}/take-activity`);
+  };
+
+  let actionButton = null;
+  if (ongoing) {
+    actionButton = (
+      <Button isDisabled={attemptLoading} onPress={() => handleResume()}>
+        {attemptLoading ? (
+          <ButtonSpinner />
+        ) : (
+          <ButtonText>Resume Activity</ButtonText>
+        )}
+      </Button>
+    );
+  } else if (isPastDue) {
+    actionButton = (
+      <Button isDisabled>
+        <ButtonText>Past Due</ButtonText>
+      </Button>
+    );
+  } else if (isOutOfAttempts) {
+    actionButton = (
+      <Button isDisabled>
+        <ButtonText>No Attempts Left</ButtonText>
+      </Button>
+    );
+  } else {
+    actionButton = (
+      <Button isDisabled={isPending} onPress={() => handleStart()}>
+        <ButtonText>Take Assessment</ButtonText>
+      </Button>
+    );
+  }
 
   return (
     <Box className="flex-1 w-full max-w-screen-md mx-auto">
@@ -44,47 +130,40 @@ const AssessmentDetails = () => {
         showsVerticalScrollIndicator={false}
       >
         <Box className="p-4">
-          <Text>Due {formattedDate}</Text>
+          <Text>Due {useFormattedDate(data.end_time, true)} </Text>
           <Heading size="2xl">
             {data.activity_type_name}: {data?.activity_name}
           </Heading>
-          {data.show_score && (
-            <Text> Student total score / {data.max_score}</Text>
-          )}
+
           <Text>
-            Retakes: {data.student_retake_count} / {data.max_retake}
+            {data.max_score} Points • {data.time_duration} Minutes
           </Text>
+
           {data.activity_instruction && (
-            <>
+            <Box className="mt-5">
               <Heading>Instructions:</Heading>
               <Text className="text-typography-500 text-justify">
                 {data.activity_instruction}
               </Text>
-            </>
+            </Box>
           )}
+          <Box className="mt-5">
+            <Heading>Materials:</Heading>
+            {data.lesson_urls.length > 0 &&
+              data.lesson_urls.map((url) => (
+                <FileRenderer url={url} key={url.id} />
+              ))}
+          </Box>
 
-          {data.lesson_urls.length > 0 &&
-            data.lesson_urls.map((url) => (
-              <FileRenderer url={url} key={url.id} />
-            ))}
+          {data.attempts.length > 0 && (
+            <AssessmentAttempts attempts={data.attempts} />
+          )}
         </Box>
       </ScrollView>
 
       {/* sticky bottom button */}
       <Box className="absolute bottom-0 left-0 right-0 p-4 bg-[#f9f9f9] z-10">
-        {/* {isMaxRetake || (noTakes && isPastDue) ? ( */}
-        {/* <Button>
-            <ButtonText>View Score</ButtonText>
-          </Button> */}
-        {/* // ) : ( */}
-        <Button
-        // onPress={() =>
-        //   router.push(`/(root)/(protected)/activity/${id}/take-activity/`)
-        // }
-        >
-          <ButtonText>Take Activity</ButtonText>
-        </Button>
-        {/* // )} */}
+        {actionButton}
       </Box>
     </Box>
   );

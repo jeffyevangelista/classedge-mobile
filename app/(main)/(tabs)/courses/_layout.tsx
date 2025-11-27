@@ -1,4 +1,4 @@
-import LogoutButton from "@/features/auth/components/LogoutButton";
+import ProfileButton from "@/features/profile/components/profile-button";
 import { Drawer } from "expo-router/drawer";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -20,7 +20,7 @@ const CoursesLayout = () => {
             elevation: 0,
             shadowOpacity: 0,
           },
-          headerRight: () => <LogoutButton />,
+          headerRight: ({ tintColor }) => <ProfileButton color={tintColor} />,
           drawerItemStyle: {
             borderRadius: 5,
           },

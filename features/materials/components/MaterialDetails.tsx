@@ -1,5 +1,6 @@
 import ErrorFallback from "@/components/error-fallback";
 import FileRenderer from "@/components/file-renderer";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
 import { Heading } from "@/components/ui/heading";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
@@ -33,7 +34,8 @@ const MaterialDetails = () => {
       />
     );
 
-  if (!data) return <Text>No data found</Text>;
+  if (!data)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <ScrollView

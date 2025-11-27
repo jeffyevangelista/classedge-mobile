@@ -1,7 +1,7 @@
-import { Stack, useRouter } from "expo-router";
+import BackButton from "@/components/back-button";
+import { Stack } from "expo-router";
 import React from "react";
-import { Pressable } from "react-native";
-import { InformationCircleIcon } from "react-native-heroicons/outline";
+import { Platform } from "react-native";
 
 const CourseLayout = () => {
   return (
@@ -12,25 +12,17 @@ const CourseLayout = () => {
         },
         headerTintColor: "#2287d5",
         headerShadowVisible: false,
-        // headerLeft:
-        //   Platform.OS === "ios"
-        //     ? ({ tintColor }) => <BackButton tintColor={tintColor} />
-        //     : undefined,
+        headerLeft: ({ tintColor }) => <BackButton tintColor={tintColor} />,
       }}
     >
       <Stack.Screen
         name="[id]"
         options={{
           headerShown: false,
-          // headerLeft:
-          //   Platform.OS === "ios"
-          //     ? ({ tintColor }) => (
-          //         <BackButton
-          //           to="/(root)/(protected)/(tabs)/courses/"
-          //           tintColor={tintColor}
-          //         />
-          //       )
-          //     : undefined,
+          headerLeft:
+            Platform.OS === "ios"
+              ? ({ tintColor }) => <BackButton tintColor={tintColor} />
+              : undefined,
         }}
       />
       <Stack.Screen

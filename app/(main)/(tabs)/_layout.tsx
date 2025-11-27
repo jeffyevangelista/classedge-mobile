@@ -1,21 +1,19 @@
 import { COLORS } from "@/colors";
 import TabIcon from "@/components/tab-icon";
-import LogoutButton from "@/features/auth/components/LogoutButton";
 import { useNotificationCount } from "@/features/notifications/notifications.hooks";
+import ProfileButton from "@/features/profile/components/profile-button";
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
 import {
   BellIcon as BellOutline,
   BookOpenIcon as BookOpenOutline,
   CalendarIcon as CalendarOutline,
-  ChatBubbleOvalLeftEllipsisIcon as ChatOutline,
   HomeIcon as HomeOutline,
 } from "react-native-heroicons/outline";
 import {
   BellIcon as BellSolid,
   BookOpenIcon as BookOpenSolid,
   CalendarIcon as CalendarSolid,
-  ChatBubbleOvalLeftEllipsisIcon as ChatSolid,
   HomeIcon as HomeSolid,
 } from "react-native-heroicons/solid";
 
@@ -26,7 +24,7 @@ export default () => {
   return (
     <Tabs
       screenOptions={{
-        headerRight: () => <LogoutButton />,
+        headerRight: ({ tintColor }) => <ProfileButton color={tintColor} />,
         headerShadowVisible: false,
         animation: "shift",
         headerTitleAlign: "left",
@@ -112,21 +110,7 @@ export default () => {
           tabBarLabel: "Courses",
         }}
       />
-      <Tabs.Screen
-        name="messages"
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <TabIcon
-              focused={focused}
-              color={color}
-              OutlineIcon={ChatOutline}
-              SolidIcon={ChatSolid}
-            />
-          ),
-          headerTitle: "Messages",
-          tabBarLabel: "Messages",
-        }}
-      />
+
       <Tabs.Screen
         name="notifications"
         options={{

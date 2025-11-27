@@ -5,26 +5,41 @@ type LessonUrl = {
   lesson_file: string;
 };
 
+export type Attempt = {
+  id: number;
+  attempt_number: number;
+  is_submitted: boolean;
+  score: number;
+  status: "ongoing" | "submitted" | "expired";
+  started_at: string; // ISO datetime
+  will_end_at: string; // ISO datetime
+  remaining_seconds: number;
+};
+
 export type Assessment = {
-  subject_id: number;
   id: number;
   activity_name: string;
   activity_type: number;
   activity_type_name: string;
-  start_time: string;
-  end_time: string;
+  subject_id: number;
+  start_time: string; // ISO string
+  end_time: string; // ISO string
   show_score: boolean;
   max_score: number;
   passing_score: number;
-  passing_score_type: "percentage" | "points" | string;
+  passing_score_type: "percentage" | "points"; // inferred; add more if needed
   time_duration: number;
   max_retake: number;
-  retake_method: "highest" | "average" | "latest" | string;
+  retake_method: "highest" | string; // can refine if backend has strict choices
   activity_instruction: string;
   classroom_mode: boolean;
   shuffle_questions: boolean;
   student_retake_count: number;
+  remaining_attempts: number;
+
   lesson_urls: LessonUrl[];
+  attempts: Attempt[];
+  ongoing_attempt: Attempt | null;
 };
 
 type Choice = {

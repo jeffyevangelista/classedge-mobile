@@ -1,20 +1,22 @@
+import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Card } from "@/components/ui/card";
 import { HStack } from "@/components/ui/hstack";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import { VStack } from "@/components/ui/vstack";
-import { useTabScrollContext } from "@/contexts/TabScrollContext";
-
-import ErrorFallback from "@/components/error-fallback";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { ActivityIndicator, Text } from "react-native";
-import Animated, { useAnimatedScrollHandler } from "react-native-reanimated";
-import { useAssessments } from "../assessments.hooks";
+import { ActivityIndicator, FlatList } from "react-native";
+import {
+  useAssessments,
+  useSubmitAssessmentAnswers,
+} from "../assessments.hooks";
 import AssessmentItem from "./Assessment";
 
 const AssessmentList = () => {
   const { id } = useGlobalSearchParams();
-  const { scrollY } = useTabScrollContext();
+  const { mutateAsync: submitAnswer, isPending } = useSubmitAssessmentAnswers();
+
   const {
     data,
     isLoading,
@@ -26,12 +28,6 @@ const AssessmentList = () => {
     refetch,
     isRefetching,
   } = useAssessments(id as string);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
 
   if (isLoading) return <AssessmentSkeleton />;
   if (isError)
@@ -46,10 +42,10 @@ const AssessmentList = () => {
   const assessments = data?.pages.flatMap((page) => page.results) ?? [];
 
   if (!isLoading && assessments.length === 0)
-    return <Text>No assessments found.</Text>;
+    return <NoDataFallback isRefetching={isRefetching} refetch={refetch} />;
 
   return (
-    <Animated.FlatList
+    <FlatList
       data={assessments}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => <AssessmentItem {...item} />}
@@ -61,7 +57,6 @@ const AssessmentList = () => {
       }}
       onEndReachedThreshold={0.5}
       showsVerticalScrollIndicator={false}
-      onScroll={scrollHandler}
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingTop: 16 }}
     />
