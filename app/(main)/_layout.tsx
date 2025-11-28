@@ -24,14 +24,13 @@ export default function MainLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="course" />
         <Stack.Screen
-          name="material/[id]/index"
+          name="material/[materialId]/index"
           options={{ headerShown: true, title: "Lesson" }}
         />
         <Stack.Screen
-          name="assessment/[id]"
+          name="assessment/[assessmentId]"
           options={{
-            headerShown: true,
-            title: "",
+            headerShown: false,
           }}
         />
         <Stack.Screen name="profile" />

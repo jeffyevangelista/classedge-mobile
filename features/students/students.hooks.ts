@@ -15,5 +15,6 @@ export const useStudents = (courseId: string) => {
     },
     initialPageParam: 1,
     placeholderData: keepPreviousData,
+    enabled: !!courseId,
   });
 };

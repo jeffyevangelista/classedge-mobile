@@ -97,7 +97,6 @@ export default () => {
       <Tabs.Screen
         name="courses"
         options={{
-          headerShown: false,
           tabBarIcon: ({ focused, color }) => (
             <TabIcon
               focused={focused}

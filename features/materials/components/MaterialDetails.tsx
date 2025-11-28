@@ -12,9 +12,9 @@ import { RefreshControl, ScrollView, Text } from "react-native";
 import { useMaterial } from "../materials.hooks";
 
 const MaterialDetails = () => {
-  const { id } = useGlobalSearchParams();
+  const { materialId } = useGlobalSearchParams();
   const { isLoading, isError, error, data, refetch, isRefetching } =
-    useMaterial(id as string);
+    useMaterial(materialId as string);
 
   const formattedDate = data?.start_date
     ? useFormattedDate(data.start_date)

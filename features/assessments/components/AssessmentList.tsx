@@ -14,7 +14,7 @@ import {
 import AssessmentItem from "./Assessment";
 
 const AssessmentList = () => {
-  const { id } = useGlobalSearchParams();
+  const { courseId } = useGlobalSearchParams();
   const { mutateAsync: submitAnswer, isPending } = useSubmitAssessmentAnswers();
 
   const {
@@ -27,7 +27,7 @@ const AssessmentList = () => {
     fetchNextPage,
     refetch,
     isRefetching,
-  } = useAssessments(id as string);
+  } = useAssessments(courseId as string);
 
   if (isLoading) return <AssessmentSkeleton />;
   if (isError)

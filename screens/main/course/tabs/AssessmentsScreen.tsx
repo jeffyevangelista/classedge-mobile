@@ -3,7 +3,7 @@ import AssessmentList from "@/features/assessments/components/AssessmentList";
 
 const AssessmentsScreen = () => {
   return (
-    <Screen>
+    <Screen className="px-5">
       <AssessmentList />
     </Screen>
   );

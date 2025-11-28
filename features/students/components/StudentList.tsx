@@ -14,7 +14,7 @@ import { useStudents } from "../students.hooks";
 import { Student } from "../students.types";
 
 const StudentList = () => {
-  const { id } = useGlobalSearchParams();
+  const { courseId } = useGlobalSearchParams();
 
   const {
     data,
@@ -26,7 +26,7 @@ const StudentList = () => {
     fetchNextPage,
     refetch,
     isRefetching,
-  } = useStudents(id as string);
+  } = useStudents(courseId as string);
 
   if (isLoading) return <ActivityIndicator />;
   if (isError)

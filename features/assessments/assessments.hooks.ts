@@ -8,11 +8,9 @@ import {
 import {
   autoSaveAttempt,
   getAssessment,
-  getAssessmentAttempt,
   getAssessmentQuestions,
   getAssessments,
   getPendingAssessments,
-  startAssessmentAttempt,
   submitAssessmentAnswers,
 } from "./assessments.apis";
 
@@ -34,13 +32,14 @@ export const useAssessments = (courseId: string) => {
   });
 };
 
-export const useAssessment = (courseId: string) => {
+export const useAssessment = (assessmentId: string) => {
   return useQuery({
-    queryKey: ["course-assessment", courseId],
-    queryFn: () => getAssessment(courseId),
+    queryKey: ["course-assessment", assessmentId],
+    queryFn: () => getAssessment(assessmentId),
     staleTime: 0, // Always consider data stale
     gcTime: 0, // Don't cache data
     refetchOnMount: "always", // Always refetch to get latest attempt status
+    enabled: !!assessmentId,
   });
 };
 
@@ -73,33 +72,6 @@ export const useAssessmentQuestions = (assessmentId: string) => {
       return data;
     },
     placeholderData: keepPreviousData,
-  });
-};
-
-export const useStartAssessmentAttempt = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ["start-assessment-attempt"],
-    mutationFn: (activityId: string) => startAssessmentAttempt(activityId),
-
-    onSuccess: (data, variables) => {
-      console.log({ data, variables });
-
-      queryClient.invalidateQueries({
-        // queryKey: ["course-assessment", variables],
-      });
-    },
-  });
-};
-
-export const useGetAssessmentAttempt = (attemptId?: string) => {
-  return useQuery({
-    queryKey: ["assessment-attempt", attemptId],
-    queryFn: () => getAssessmentAttempt(attemptId as string),
-    enabled: !!attemptId,
-    staleTime: 0, // Always consider data stale
-    gcTime: 0, // Don't cache data (formerly cacheTime in v4)
-    refetchOnMount: "always", // Always refetch when component mounts
   });
 };
 

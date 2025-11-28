@@ -1,19 +1,10 @@
+import { Attempt } from "../attempts/attempts.types";
+
 type LessonUrl = {
   id: number;
   lesson_name: string;
   lesson_url: null | any;
   lesson_file: string;
-};
-
-export type Attempt = {
-  id: number;
-  attempt_number: number;
-  is_submitted: boolean;
-  score: number;
-  status: "ongoing" | "submitted" | "expired";
-  started_at: string; // ISO datetime
-  will_end_at: string; // ISO datetime
-  remaining_seconds: number;
 };
 
 export type Assessment = {
@@ -36,7 +27,6 @@ export type Assessment = {
   shuffle_questions: boolean;
   student_retake_count: number;
   remaining_attempts: number;
-
   lesson_urls: LessonUrl[];
   attempts: Attempt[];
   ongoing_attempt: Attempt | null;

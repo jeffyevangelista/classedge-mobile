@@ -1,8 +1,4 @@
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Pressable } from "@/components/ui/pressable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUserDetails } from "@/features/profile/profile.hooks";
@@ -22,13 +18,12 @@ const ProfileButton = ({ color }: { color: string | undefined }) => {
       }}
     >
       <Avatar className="h-11 w-11 mr-3 border-2 border-primary-600">
-        <AvatarFallbackText>
-          {data?.first_name + " " + data?.last_name}
-        </AvatarFallbackText>
         <AvatarImage
-          source={{
-            uri: data?.photo,
-          }}
+          source={
+            data?.photo
+              ? { uri: data.photo }
+              : require("@/assets/images/silhouette.png")
+          }
         />
       </Avatar>
     </Pressable>

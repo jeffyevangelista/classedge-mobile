@@ -15,7 +15,7 @@ import { useMaterials } from "../materials.hooks";
 import { Material } from "../materials.types";
 
 const MaterialList = () => {
-  const { id } = useGlobalSearchParams();
+  const { courseId } = useGlobalSearchParams();
 
   const {
     data,
@@ -27,7 +27,7 @@ const MaterialList = () => {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useMaterials(id as string);
+  } = useMaterials(courseId as string);
 
   if (isLoading && !data) return <MaterialsSkeleton />;
   if (isError)

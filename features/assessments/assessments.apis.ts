@@ -34,14 +34,6 @@ export const getPendingAssessments = async ({
   return (await api.get(`/activities/pending/?page=${pageParam}`)).data;
 };
 
-export const startAssessmentAttempt = async (assessmentId: string) => {
-  return (await api.post(`/activities/${assessmentId}/attempt/start/`)).data;
-};
-
-export const getAssessmentAttempt = async (attemptId: string) => {
-  return (await api.get(`/attempts/${attemptId}/`)).data;
-};
-
 export const getAssessmentQuestions = async (
   assessmentId: string
 ): Promise<{

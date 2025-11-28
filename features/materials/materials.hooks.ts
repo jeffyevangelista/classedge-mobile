@@ -19,6 +19,7 @@ export const useMaterials = (courseId: string) => {
     },
     initialPageParam: 1,
     placeholderData: keepPreviousData,
+    enabled: !!courseId,
   });
 };
 

@@ -1,9 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
-import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Box } from "@/components/ui/box";
 import { Center } from "@/components/ui/center";
 import { Heading } from "@/components/ui/heading";
@@ -37,6 +33,8 @@ const ProfileDetails = () => {
       />
     );
 
+  console.log(data);
+
   return (
     <Box className="w-full">
       {/* COVER IMAGE */}
@@ -57,16 +55,16 @@ const ProfileDetails = () => {
             bg-[#f9f9f9] shadow-none absolute bottom-0 left-1/2 
             -translate-x-1/2 translate-y-1/2 
             w-32 h-32 md:w-40 md:h-40 xl:w-56 xl:h-56
-            rounded-full border-8 border-[#f9f9f9]
+            rounded-full border-4 border-[#f9f9f9]
           "
         >
-          {data.photo ? (
-            <AvatarImage source={{ uri: data.photo }} />
-          ) : (
-            <AvatarFallbackText>
-              {data.first_name + " " + data.last_name}
-            </AvatarFallbackText>
-          )}
+          <AvatarImage
+            source={
+              data.photo
+                ? { uri: data.photo }
+                : require("@/assets/images/silhouette.png")
+            }
+          />
         </Avatar>
       </Box>
 

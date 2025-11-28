@@ -43,12 +43,12 @@ import type { Question } from "../assessments.types";
 
 const AssessmentQuestions = () => {
   const router = useRouter();
-  const { attempt, setTimerSeconds } = useStore();
-  const { id } = useGlobalSearchParams();
+  const { attempt, setTimerSeconds, setAttempt } = useStore();
+  const { assessmentId } = useGlobalSearchParams();
   const pageSize = 5;
 
   const { data, isLoading, isError, error, refetch, isRefetching } =
-    useAssessmentQuestions(id as string);
+    useAssessmentQuestions(assessmentId as string);
 
   const { mutateAsync: autoSaveAttempt } = useAutoSaveAttempt();
   const { mutateAsync: submitAnswer, isPending: submitPending } =
@@ -70,14 +70,26 @@ const AssessmentQuestions = () => {
 
   // ---------------- Submission Handlers ----------------
   const handleAutoSubmit = useCallback(async () => {
-    await submitAnswer({ activityId: id as string, answers: form.getValues() });
-  }, [id, submitAnswer, form]);
+    await submitAnswer({
+      activityId: assessmentId as string,
+      answers: form.getValues(),
+    });
+    // Clear attempt from store after submission
+    setAttempt(null);
+    router.back();
+  }, [assessmentId, submitAnswer, form, setAttempt, router]);
 
   const handleSubmit = useCallback(
     async (values: any) => {
-      await submitAnswer({ activityId: id as string, answers: values });
+      await submitAnswer({
+        activityId: assessmentId as string,
+        answers: values,
+      });
+      // Clear attempt from store after submission
+      setAttempt(null);
+      router.back();
     },
-    [id, submitAnswer]
+    [assessmentId, submitAnswer, setAttempt, router]
   );
 
   // ---------------- Timer Setup ----------------
@@ -126,14 +138,17 @@ const AssessmentQuestions = () => {
 
   // ---------------- Autosave Logic ----------------
   useEffect(() => {
-    if (!attempt || !id) return;
+    if (!attempt || !assessmentId) return;
 
     if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
 
     debounceTimeout.current = setTimeout(() => {
-      autoSaveAttempt({ activityId: id as string, answers: watchAll });
+      autoSaveAttempt({
+        activityId: assessmentId as string,
+        answers: watchAll,
+      });
     }, 1000);
-  }, [watchAll, attempt, id, autoSaveAttempt]);
+  }, [watchAll, attempt, assessmentId, autoSaveAttempt]);
 
   // ---------------- Early Returns (after all hooks) ----------------
   if (isLoading) return <Text>Loading...</Text>;
@@ -158,16 +173,20 @@ const AssessmentQuestions = () => {
 
   return (
     <FormProvider {...form}>
-      <ScrollView ref={scrollRef}>
-        <Text style={{ textAlign: "center", marginVertical: 10 }}>
-          Time Remaining: {remaining}s
-        </Text>
+      <ScrollView ref={scrollRef} className="p-2.5 md:p-0">
+        {pageQuestions.map((q, idx) => {
+          const questionNumber = currentPage * pageSize + idx + 1;
+          return (
+            <Question
+              key={q.id}
+              question={q}
+              questionNumber={questionNumber}
+              totalQuestions={questions.length}
+            />
+          );
+        })}
 
-        {pageQuestions.map((q) => (
-          <Question key={q.id} question={q} />
-        ))}
-
-        <Box className="flex-row mx-auto max-w-screen-md w-full mt-4">
+        <Box className=" flex-row md:mx-auto max-w-screen-md w-full mt-4 mb-5 px-2.5 md:px-0">
           {currentPage > 0 && (
             <Button
               className="mr-auto"
@@ -195,7 +214,6 @@ const AssessmentQuestions = () => {
               disabled={submitPending}
             >
               <ButtonText>Submit</ButtonText>
-              <ButtonIcon as={ArrowRightIcon} />
             </Button>
           )}
         </Box>
@@ -208,22 +226,38 @@ const AssessmentQuestions = () => {
 // QUESTION WRAPPER
 // ----------------------------------------------------------------------------------
 
-const Question = ({ question }: { question: Question }) => {
+const Question = ({
+  question,
+  questionNumber,
+  totalQuestions,
+}: {
+  question: Question;
+  questionNumber: number;
+  totalQuestions: number;
+}) => {
+  const questionLabel = `Question ${questionNumber} of ${totalQuestions}`;
+
   switch (question.quiz_type) {
     case "Multiple Choice":
-      return <MultipleChoice question={question} />;
+      return (
+        <MultipleChoice question={question} questionLabel={questionLabel} />
+      );
     case "True/False":
-      return <TrueFalse question={question} />;
+      return <TrueFalse question={question} questionLabel={questionLabel} />;
     case "Fill in the Blank":
-      return <FillInTheBlank question={question} />;
+      return (
+        <FillInTheBlank question={question} questionLabel={questionLabel} />
+      );
     case "Matching Type":
-      return <MatchingType question={question} />;
+      return <MatchingType question={question} questionLabel={questionLabel} />;
     case "Essay":
-      return <Essay question={question} />;
+      return <Essay question={question} questionLabel={questionLabel} />;
     case "Document":
-      return <Document question={question} />;
+      return <Document question={question} questionLabel={questionLabel} />;
     case "Calculated Numeric":
-      return <CalculatedNumeric question={question} />;
+      return (
+        <CalculatedNumeric question={question} questionLabel={questionLabel} />
+      );
     default:
       return null;
   }
@@ -233,11 +267,17 @@ const Question = ({ question }: { question: Question }) => {
 // QUESTION TYPES
 // ----------------------------------------------------------------------------------
 
-const MultipleChoice = ({ question }: { question: Question }) => {
+const MultipleChoice = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <Controller
         name={String(question.id)}
         control={control}
@@ -263,11 +303,17 @@ const MultipleChoice = ({ question }: { question: Question }) => {
   );
 };
 
-const TrueFalse = ({ question }: { question: Question }) => {
+const TrueFalse = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <Controller
         name={String(question.id)}
         control={control}
@@ -293,17 +339,23 @@ const TrueFalse = ({ question }: { question: Question }) => {
   );
 };
 
-const FillInTheBlank = ({ question }: { question: Question }) => {
+const FillInTheBlank = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <Controller
         name={String(question.id)}
         control={control}
         defaultValue=""
         render={({ field }) => (
-          <Input>
+          <Input variant="outline">
             <InputField
               value={field.value}
               onChangeText={field.onChange}
@@ -316,11 +368,17 @@ const FillInTheBlank = ({ question }: { question: Question }) => {
   );
 };
 
-const Essay = ({ question }: { question: Question }) => {
+const Essay = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <Controller
         name={String(question.id)}
         control={control}
@@ -341,17 +399,23 @@ const Essay = ({ question }: { question: Question }) => {
 
 // ---------------- MATCHING TYPE (LEFT -> RIGHT) ----------------
 
-const MatchingType = ({ question }: { question: Question }) => {
+const MatchingType = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   const leftItems = question.choices?.filter((c) => c.is_left_side) || [];
   const rightItems = question.choices?.filter((c) => !c.is_left_side) || [];
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <VStack space="md">
         {leftItems.map((left) => (
-          <Box key={left.id} className="flex-row items-center justify-between">
+          <Box key={left.id} className="flex-row items-center justify-around">
             <Text>{left.choice_text}</Text>
 
             <Controller
@@ -382,7 +446,13 @@ const MatchingType = ({ question }: { question: Question }) => {
 
 // ---------------- DOCUMENT UPLOAD ----------------
 
-const Document = ({ question }: { question: Question }) => {
+const Document = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => {
   const { control } = useFormContext();
 
   const uploadFile = async (field: any) => {
@@ -396,7 +466,7 @@ const Document = ({ question }: { question: Question }) => {
   };
 
   return (
-    <QuestionCard title={question.question_text}>
+    <QuestionCard title={question.question_text} questionLabel={questionLabel}>
       <Controller
         name={String(question.id)}
         control={control}
@@ -418,8 +488,14 @@ const Document = ({ question }: { question: Question }) => {
   );
 };
 
-const CalculatedNumeric = ({ question }: { question: Question }) => (
-  <QuestionCard title={question.question_text}>
+const CalculatedNumeric = ({
+  question,
+  questionLabel,
+}: {
+  question: Question;
+  questionLabel: string;
+}) => (
+  <QuestionCard title={question.question_text} questionLabel={questionLabel}>
     <Text>Calculated Numeric - Not implemented yet</Text>
   </QuestionCard>
 );
@@ -430,12 +506,17 @@ const CalculatedNumeric = ({ question }: { question: Question }) => (
 
 const QuestionCard = ({
   title,
+  questionLabel,
   children,
 }: {
   title: string;
+  questionLabel?: string;
   children: React.ReactNode;
 }) => (
   <Card className="mb-2.5 rounded-lg max-w-screen-md mx-auto w-full gap-2.5 p-4">
+    {questionLabel && (
+      <Text className="text-sm text-gray-600 mb-1">{questionLabel}</Text>
+    )}
     <Heading size="md">{title}</Heading>
     {children}
   </Card>

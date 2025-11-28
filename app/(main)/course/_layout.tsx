@@ -16,7 +16,7 @@ const CourseLayout = () => {
       }}
     >
       <Stack.Screen
-        name="[id]"
+        name="[courseId]"
         options={{
           headerShown: false,
           headerLeft:

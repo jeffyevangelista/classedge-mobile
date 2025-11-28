@@ -4,7 +4,7 @@ import React from "react";
 
 const StudentsScreen = () => {
   return (
-    <Screen>
+    <Screen className="px-5">
       <StudentList />
     </Screen>
   );

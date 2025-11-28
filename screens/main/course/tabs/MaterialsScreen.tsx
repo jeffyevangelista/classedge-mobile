@@ -3,7 +3,7 @@ import MaterialList from "@/features/materials/components/MaterialList";
 
 const MaterialsScreen = () => {
   return (
-    <Screen>
+    <Screen className="px-5">
       <MaterialList />
     </Screen>
   );

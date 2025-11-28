@@ -2,35 +2,22 @@ import ErrorFallback from "@/components/error-fallback";
 import FileRenderer from "@/components/file-renderer";
 import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
-import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
+import ResumeAssessmentButton from "@/features/attempts/components/ResumeAssessmentButton";
+import StartAssessmentButton from "@/features/attempts/components/StartAssessmentButton";
 import { useFormattedDate } from "@/hooks/useFormattedDate";
-import useStore from "@/lib/store";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
+import { useLocalSearchParams } from "expo-router";
 import { RefreshControl, ScrollView, Text } from "react-native";
-import { toast } from "sonner-native";
-import {
-  useAssessment,
-  useGetAssessmentAttempt,
-  useStartAssessmentAttempt,
-} from "../assessments.hooks";
+import { useAssessment } from "../assessments.hooks";
 import AssessmentAttempts from "./AssessmentAttempts";
-
 const AssessmentDetails = () => {
-  const { setAttempt } = useStore();
-  const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const { assessmentId } = useLocalSearchParams();
   const { isLoading, isError, error, data, refetch, isRefetching } =
-    useAssessment(id as string);
+    useAssessment(assessmentId as string);
   const attemptId = data?.ongoing_attempt?.id?.toString();
-  const {
-    data: attempt,
-    isLoading: attemptLoading,
-    error: attemptError,
-  } = useGetAssessmentAttempt(attemptId);
-  const { mutateAsync: startAttempt, isPending } = useStartAssessmentAttempt();
+
   if (isLoading)
     return (
       <LoadingComponent isRefetching={isLoading} refetch={() => refetch()} />
@@ -58,48 +45,13 @@ const AssessmentDetails = () => {
   );
   const canViewScore = data.show_score && hasSubmittedAttempts;
 
-  const handleStart = async () => {
-    try {
-      const attempt = await startAttempt(id as string);
-
-      setAttempt(attempt);
-      router.push(`/(main)/assessment/${id}/take-activity`);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to start assessment attempt");
-    }
-  };
-
-  const handleResume = () => {
-    if (attemptLoading) return;
-
-    if (attemptError) {
-      toast.error(
-        (attemptError as any)?.message || "Failed to fetch assessment attempt"
-      );
-      return;
-    }
-
-    if (!attempt) {
-      toast.error("Assessment attempt not found");
-      return;
-    }
-
-    setAttempt(attempt);
-    console.log({ attempt: attempt });
-
-    router.push(`/(main)/assessment/${id}/take-activity`);
-  };
-
   let actionButton = null;
   if (ongoing) {
     actionButton = (
-      <Button isDisabled={attemptLoading} onPress={() => handleResume()}>
-        {attemptLoading ? (
-          <ButtonSpinner />
-        ) : (
-          <ButtonText>Resume Activity</ButtonText>
-        )}
-      </Button>
+      <ResumeAssessmentButton
+        assessmentId={assessmentId as string}
+        attemptId={attemptId as string}
+      />
     );
   } else if (isPastDue) {
     actionButton = (
@@ -115,15 +67,14 @@ const AssessmentDetails = () => {
     );
   } else {
     actionButton = (
-      <Button isDisabled={isPending} onPress={() => handleStart()}>
-        <ButtonText>Take Assessment</ButtonText>
-      </Button>
+      <StartAssessmentButton assessmentId={assessmentId as string} />
     );
   }
 
   return (
     <Box className="flex-1 w-full max-w-screen-md mx-auto">
       <ScrollView
+        className="pb-24"
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
@@ -159,6 +110,7 @@ const AssessmentDetails = () => {
             <AssessmentAttempts attempts={data.attempts} />
           )}
         </Box>
+        <Box className="h-24" />
       </ScrollView>
 
       {/* sticky bottom button */}

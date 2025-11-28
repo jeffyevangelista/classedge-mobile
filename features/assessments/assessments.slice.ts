@@ -1,5 +1,5 @@
+import { Attempt } from "@/features/attempts/attempts.types";
 import { StateCreator } from "zustand";
-import { Attempt } from "./assessments.types";
 
 type AssessmentState = {
   attempt: Attempt | null;
