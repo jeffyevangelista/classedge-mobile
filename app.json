@@ -1,27 +1,34 @@
 {
   "expo": {
-    "name": "hcccilms",
-    "slug": "hcccilms",
+    "name": "classedge",
+    "slug": "classedge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "hcccilms",
+    "scheme": "classedge",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jeffigy.hcccilms"
+      "icon": {
+        "dark": "./assets/images/icons/ios-dark.png",
+        "light": "./assets/images/icons/ios-light.png",
+        "tinted": "./assets/images/icons/ios-tinted.png"
+      },
+      "bundleIdentifier": "com.classify.classedge",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#f9f9f9",
+        "foregroundImage": "./assets/images/icons/adaptive-icon.png",
+        "monochromeImage": "./assets/images/icons/monochrome-icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.jeffigy.hcccilms"
+      "package": "com.classify.classedge"
     },
     "web": {
       "output": "static",
@@ -33,7 +40,8 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "imageWidth": 170,
+          "imageHeight": 170,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
           "dark": {
@@ -70,6 +78,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c49ebbbe-ce1d-4066-867a-b457df41c4e3"
+      }
     }
   }
 }
