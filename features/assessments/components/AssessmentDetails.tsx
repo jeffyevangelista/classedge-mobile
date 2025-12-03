@@ -40,10 +40,6 @@ const AssessmentDetails = () => {
     ? new Date(data.end_time) < new Date()
     : false;
   const isOutOfAttempts = data.remaining_attempts === 0;
-  const hasSubmittedAttempts = data.attempts.some(
-    (a) => a.status === "submitted"
-  );
-  const canViewScore = data.show_score && hasSubmittedAttempts;
 
   let actionButton = null;
   if (ongoing) {
@@ -92,23 +88,29 @@ const AssessmentDetails = () => {
 
           {data.activity_instruction && (
             <Box className="mt-5">
-              <Heading>Instructions:</Heading>
+              <Heading>Instructions</Heading>
               <Text className="text-typography-500 text-justify">
                 {data.activity_instruction}
               </Text>
             </Box>
           )}
           <Box className="mt-5">
-            <Heading>Materials:</Heading>
-            {data.lesson_urls.length > 0 &&
+            <Heading>Materials</Heading>
+            {data.lesson_urls.length > 0 ? (
               data.lesson_urls.map((url) => (
                 <FileRenderer url={url} key={url.id} />
-              ))}
+              ))
+            ) : (
+              <Text className="text-typography-400">
+                No materials available
+              </Text>
+            )}
           </Box>
 
-          {data.attempts.length > 0 && (
-            <AssessmentAttempts attempts={data.attempts} />
-          )}
+          <AssessmentAttempts
+            attempts={data.attempts}
+            showScore={data.show_score}
+          />
         </Box>
         <Box className="h-24" />
       </ScrollView>

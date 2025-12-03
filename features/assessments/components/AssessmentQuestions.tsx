@@ -1,3 +1,4 @@
+import ErrorFallback from "@/components/error-fallback";
 import NoDataFallback from "@/components/no-data-fallback";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
@@ -24,7 +25,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { ScrollView, Text } from "react-native";
+import { ActivityIndicator, ScrollView, Text } from "react-native";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -151,14 +152,30 @@ const AssessmentQuestions = () => {
   }, [watchAll, attempt, assessmentId, autoSaveAttempt]);
 
   // ---------------- Early Returns (after all hooks) ----------------
-  if (isLoading) return <Text>Loading...</Text>;
-  if (isError) return <Text>Error: {error.message}</Text>;
+  if (isLoading) return <ActivityIndicator />;
+  if (isError)
+    return (
+      <ErrorFallback
+        error={error.message}
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
 
   const questions = data?.questions || [];
   if (!questions.length)
     return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
   if (!attempt)
-    return <Text>No attempt loaded. Go back and start/resume.</Text>;
+    return (
+      <ErrorFallback
+        error="No attempt loaded. Go back and start/resume."
+        refetch={refetch}
+        isRefetching={isRefetching}
+      />
+    );
+
+  if (!isLoading && questions.length === 0)
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   // ---------------- Pagination ----------------
   const pageQuestions = questions.slice(

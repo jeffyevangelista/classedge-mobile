@@ -92,6 +92,8 @@ export const useAutoSaveAttempt = () => {
 };
 
 export const useSubmitAssessmentAnswers = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["submit-answer"],
     mutationFn: (payload: any) => submitAssessmentAnswers(payload),
@@ -99,7 +101,9 @@ export const useSubmitAssessmentAnswers = () => {
       console.log({ error, context });
     },
     onSuccess: (data, variables) => {
-      console.log("Success", { data, variables });
+      queryClient.invalidateQueries({
+        queryKey: ["course-assessment", variables.activityId],
+      });
     },
   });
 };

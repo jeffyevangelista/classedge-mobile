@@ -1,4 +1,5 @@
 import ErrorFallback from "@/components/error-fallback";
+import NoDataFallback from "@/components/no-data-fallback";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Box } from "@/components/ui/box";
 import { Center } from "@/components/ui/center";
@@ -25,15 +26,7 @@ const ProfileDetails = () => {
     );
 
   if (!data)
-    return (
-      <ErrorFallback
-        error="No data found"
-        refetch={refetch}
-        isRefetching={isRefetching}
-      />
-    );
-
-  console.log(data);
+    return <NoDataFallback refetch={refetch} isRefetching={isRefetching} />;
 
   return (
     <Box className="w-full">

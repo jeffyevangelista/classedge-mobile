@@ -36,6 +36,7 @@ const AssessmentItem = ({
   activity_type_name,
   end_time,
   id,
+  attempts,
 }: Assessment) => {
   const { label } = getActivityIcon(activity_type_name);
 
@@ -44,14 +45,23 @@ const AssessmentItem = ({
   // Calculate urgency
   const getUrgency = () => {
     if (!end_time) return null;
+
+    // Don't show urgency badge if there are attempts
+    if (attempts?.length > 0) {
+      return null;
+    }
+
     const now = new Date();
     const dueDate = new Date(end_time);
     const hoursUntilDue =
       (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60);
 
-    if (hoursUntilDue < 0) return { label: "Overdue", color: "text-red-600" };
-    if (hoursUntilDue < 24)
+    if (hoursUntilDue < 0) {
+      return { label: "Overdue", color: "text-red-600" };
+    }
+    if (hoursUntilDue < 24) {
       return { label: "Due today", color: "text-orange-600" };
+    }
     return null;
   };
 
