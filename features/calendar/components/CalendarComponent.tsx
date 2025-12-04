@@ -113,40 +113,28 @@ const CalendarComponent = () => {
     });
 
     // ------------------------------------------------
-    // 3. SELECTED DATE STYLE
+    // 3. SELECTED DATE STYLE (using period properties)
     // ------------------------------------------------
     if (!marks[selectedDate]) marks[selectedDate] = {};
 
-    marks[selectedDate].customStyles = {
-      container: {
-        backgroundColor: "#146BB5",
-        borderRadius: 10,
-      },
-      text: {
-        color: "white",
-        fontWeight: "700",
-      },
-    };
+    // Apply selected date styling using period marking properties
+    // This ensures it works with markingType="period"
+    marks[selectedDate].startingDay = true;
+    marks[selectedDate].endingDay = true;
+    marks[selectedDate].color = "#146BB5";
+    marks[selectedDate].textColor = "white";
 
     // ------------------------------------------------
-    // 4. TODAY STYLE (border only)
+    // 4. TODAY STYLE (using period properties)
     // ------------------------------------------------
     if (!marks[today]) marks[today] = {};
 
     // Only apply today style if it's NOT the selected date
     if (today !== selectedDate) {
-      marks[today].customStyles = {
-        container: {
-          borderWidth: 1,
-          borderColor: "#146BB5",
-          borderRadius: 10,
-          backgroundColor: "transparent",
-        },
-        text: {
-          color: "#146BB5",
-          fontWeight: "700",
-        },
-      };
+      marks[today].startingDay = true;
+      marks[today].endingDay = true;
+      marks[today].color = "#E3F2FD"; // Light blue background
+      marks[today].textColor = "#146BB5";
     }
 
     return marks;
