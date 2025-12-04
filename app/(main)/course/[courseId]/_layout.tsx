@@ -1,11 +1,15 @@
-import BackButton from "@/components/back-button";
 import TabIcon from "@/components/tab-icon";
-import { Link, Tabs, useRouter } from "expo-router";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabNavigationEventMap,
+  MaterialTopTabNavigationOptions,
+} from "@react-navigation/material-top-tabs";
+import { ParamListBase, TabNavigationState } from "@react-navigation/native";
+import { withLayoutContext } from "expo-router";
 import React from "react";
 import {
   ClipboardDocumentListIcon as ClipboardDocumentListOutline,
   FolderOpenIcon as FolderOpenOutline,
-  InformationCircleIcon,
   UsersIcon as UsersOutline,
 } from "react-native-heroicons/outline";
 import {
@@ -14,22 +18,20 @@ import {
   UsersIcon as UsersSolid,
 } from "react-native-heroicons/solid";
 
-const CourseTabsLayout = () => {
-  const router = useRouter();
+const { Navigator } = createMaterialTopTabNavigator();
 
+export const MaterialTopTabs = withLayoutContext<
+  MaterialTopTabNavigationOptions,
+  typeof Navigator,
+  TabNavigationState<ParamListBase>,
+  MaterialTopTabNavigationEventMap
+>(Navigator);
+
+const CourseTabsLayout = () => {
   return (
-    <Tabs
+    <MaterialTopTabs
       screenOptions={{
-        headerLeft: () => <BackButton />,
-        headerRight: () => (
-          <Link
-            href={"/course/course-details"}
-            className="w-10 h-10 rounded-full flex justify-center items-center "
-          >
-            <InformationCircleIcon color={"#2287d5"} size={28} />
-          </Link>
-        ),
-        headerShadowVisible: false,
+        tabBarShowIcon: false,
         tabBarLabelStyle: {
           fontFamily: "Poppins-Medium",
         },
@@ -40,12 +42,9 @@ const CourseTabsLayout = () => {
           shadowOpacity: 0,
           borderTopWidth: 0,
         },
-        headerStyle: {
-          backgroundColor: "#f9f9f9",
-        },
       }}
     >
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="index"
         options={{
           title: "Materials",
@@ -60,7 +59,7 @@ const CourseTabsLayout = () => {
           ),
         }}
       />
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="assessments"
         options={{
           title: "Assessments",
@@ -75,7 +74,7 @@ const CourseTabsLayout = () => {
           tabBarLabel: "Assessments",
         }}
       />
-      <Tabs.Screen
+      <MaterialTopTabs.Screen
         name="students"
         options={{
           title: "Students",
@@ -90,7 +89,7 @@ const CourseTabsLayout = () => {
           tabBarLabel: "Students",
         }}
       />
-    </Tabs>
+    </MaterialTopTabs>
   );
 };
 
