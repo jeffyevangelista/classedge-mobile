@@ -42,6 +42,8 @@ const initialState: AuthState = {
   expiresAt: null,
 };
 
+const ALLOWED_ROLES = ["Student", "Teacher", "Program Head"];
+
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   ...initialState,
   setAccessToken: async (token) => {
@@ -53,6 +55,17 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
       exp,
     } = jwtDecode<DecodedToken>(token);
     const expiresAt = exp * 1000;
+
+    // Validate user has at least one allowed role
+    const hasAllowedRole = role.some((userRole) =>
+      ALLOWED_ROLES.includes(userRole)
+    );
+
+    if (!hasAllowedRole) {
+      throw new Error(
+        "Access denied. Only Students, Teachers, and Program Heads can access this application."
+      );
+    }
 
     await Promise.all([
       storeSSData(ACCESS_TOKEN_KEY, token),

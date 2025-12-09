@@ -1,4 +1,5 @@
 import BackButton from "@/components/back-button";
+import LogoutButton from "@/features/auth/components/LogoutButton";
 import { Stack } from "expo-router";
 
 export default () => {
@@ -16,7 +17,10 @@ export default () => {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Profile" }} />
+      <Stack.Screen
+        name="index"
+        options={{ title: "Profile", headerRight: () => <LogoutButton /> }}
+      />
       <Stack.Screen
         name="profile-info"
         options={{

@@ -2,6 +2,7 @@ import useStore from "@/lib/store";
 import { queryClient } from "@/providers/QueryProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 import {
   forgotPassword,
   login,
@@ -15,16 +16,29 @@ import { refresh } from "./refreshToken";
 
 export const useLogin = () => {
   const router = useRouter();
-  const { setAccessToken, setRefreshToken } = useStore.getState();
+  const { setAccessToken, setRefreshToken, clearCredentials } =
+    useStore.getState();
   return useMutation({
     mutationKey: ["login"],
     mutationFn: (payload: LoginCredentials) => login(payload),
     onSuccess: async (data: AuthResponse) => {
-      await Promise.all([
-        setAccessToken(data.access),
-        setRefreshToken(data.refresh),
-      ]);
-      router.replace("/(main)/(tabs)");
+      try {
+        await Promise.all([
+          setAccessToken(data.access),
+          setRefreshToken(data.refresh),
+        ]);
+        router.replace("/(main)/(tabs)");
+      } catch (error) {
+        // Clear any partial credentials if role validation fails
+        await clearCredentials();
+
+        // Show native alert for role validation errors
+        const errorMessage =
+          error instanceof Error ? error.message : "Authentication failed";
+        Alert.alert("Access Denied", errorMessage, [{ text: "OK" }]);
+
+        throw error;
+      }
     },
   });
 };
@@ -51,20 +65,32 @@ export const useLogout = () => {
 
 export const useMsLogin = (token: string | null) => {
   const router = useRouter();
-  const { setAccessToken, setRefreshToken } = useStore.getState();
+  const { setAccessToken, setRefreshToken, clearCredentials } =
+    useStore.getState();
   return useQuery({
     queryKey: ["ms-login"],
     queryFn: async () => {
       const data = await msLogin(token);
 
       if (data) {
-        await Promise.all([
-          setAccessToken(data.access),
-          setRefreshToken(data.refresh),
-        ]);
-      }
+        try {
+          await Promise.all([
+            setAccessToken(data.access),
+            setRefreshToken(data.refresh),
+          ]);
+          router.replace("/(main)/(tabs)");
+        } catch (error) {
+          // Clear any partial credentials if role validation fails
+          await clearCredentials();
 
-      router.replace("/(main)/(tabs)");
+          // Show native alert for role validation errors
+          const errorMessage =
+            error instanceof Error ? error.message : "Authentication failed";
+          Alert.alert("Access Denied", errorMessage, [{ text: "OK" }]);
+
+          throw error;
+        }
+      }
 
       console.log(data);
 
@@ -77,16 +103,29 @@ export const useMsLogin = (token: string | null) => {
 
 export const useSetupPassword = () => {
   const router = useRouter();
-  const { setAccessToken, setRefreshToken } = useStore.getState();
+  const { setAccessToken, setRefreshToken, clearCredentials } =
+    useStore.getState();
   return useMutation({
     mutationKey: ["setup-password"],
     mutationFn: (password: string) => setupPassword(password),
     onSuccess: async (data: AuthResponse) => {
-      await Promise.all([
-        setAccessToken(data.access),
-        setRefreshToken(data.refresh),
-      ]);
-      router.replace("/(main)/(tabs)");
+      try {
+        await Promise.all([
+          setAccessToken(data.access),
+          setRefreshToken(data.refresh),
+        ]);
+        router.replace("/(main)/(tabs)");
+      } catch (error) {
+        // Clear any partial credentials if role validation fails
+        await clearCredentials();
+
+        // Show native alert for role validation errors
+        const errorMessage =
+          error instanceof Error ? error.message : "Authentication failed";
+        Alert.alert("Access Denied", errorMessage, [{ text: "OK" }]);
+
+        throw error;
+      }
     },
   });
 };

@@ -8,11 +8,13 @@ import { Skeleton, SkeletonText } from "@/components/ui/skeleton";
 import ResumeAssessmentButton from "@/features/attempts/components/ResumeAssessmentButton";
 import StartAssessmentButton from "@/features/attempts/components/StartAssessmentButton";
 import { useFormattedDate } from "@/hooks/useFormattedDate";
+import useStore from "@/lib/store";
 import { useLocalSearchParams } from "expo-router";
 import { RefreshControl, ScrollView, Text } from "react-native";
 import { useAssessment } from "../assessments.hooks";
 import AssessmentAttempts from "./AssessmentAttempts";
 const AssessmentDetails = () => {
+  const { authUser } = useStore();
   const { assessmentId } = useLocalSearchParams();
   const { isLoading, isError, error, data, refetch, isRefetching } =
     useAssessment(assessmentId as string);
@@ -117,7 +119,7 @@ const AssessmentDetails = () => {
 
       {/* sticky bottom button */}
       <Box className="absolute bottom-0 left-0 right-0 p-4 bg-[#f9f9f9] z-10">
-        {actionButton}
+        {authUser?.role.includes("Student") ? actionButton : null}
       </Box>
     </Box>
   );

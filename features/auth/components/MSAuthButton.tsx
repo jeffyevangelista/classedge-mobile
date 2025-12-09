@@ -19,7 +19,7 @@ const MSAuthButton = () => {
   };
 
   const redirectUri = AuthSession.makeRedirectUri({
-    scheme: "hcccilms",
+    scheme: "classedge",
     path: "auth/callback",
   });
 

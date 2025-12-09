@@ -5,6 +5,8 @@ import { Stack } from "expo-router";
 export default function MainLayout() {
   const { authUser } = useStore();
 
+  console.log(authUser);
+
   return (
     <Stack
       screenOptions={{
