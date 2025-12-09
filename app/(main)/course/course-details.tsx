@@ -1,3 +1,5 @@
 import CourseDetailsScreen from "@/screens/main/course/CourseDetailsScreen";
 
-export default () => <CourseDetailsScreen />;
+export default function CourseDetails() {
+  return <CourseDetailsScreen />;
+}

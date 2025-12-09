@@ -1,3 +1,5 @@
 import NotificationsScreen from "@/screens/main/tabs/NotificationsScreen";
 
-export default () => <NotificationsScreen />;
+export default function Notifications() {
+  return <NotificationsScreen />;
+}

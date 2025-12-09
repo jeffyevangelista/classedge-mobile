@@ -9,7 +9,7 @@ import { InformationCircleIcon } from "react-native-heroicons/outline";
 const CourseLayout = () => {
   const router = useRouter();
   const { courseId } = useLocalSearchParams();
-  const { data, isLoading, isError, error } = useCourse(courseId as string);
+  const { data, isLoading } = useCourse(courseId as string);
   return (
     <Stack
       screenOptions={{

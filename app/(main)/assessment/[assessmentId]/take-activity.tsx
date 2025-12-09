@@ -1,5 +1,5 @@
 import TakeAssessmentScreen from "@/screens/main/assessment/TakeAssessmentScreen";
 
-export default () => {
+export default function TakeActivity() {
   return <TakeAssessmentScreen />;
-};
+}

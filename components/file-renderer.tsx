@@ -17,6 +17,13 @@ import { Icon, LinkIcon } from "./ui/icon";
 const FileRenderer = ({ url }: { url: any }) => {
   const { lesson_file, lesson_url } = url;
 
+  // Move hooks to component level
+  const { showImage } = useImage();
+  const [showVideo, setShowVideo] = useState(false);
+  const player = useVideoPlayer(lesson_file || "", (player) => {
+    player.loop = true;
+  });
+
   const renderUrlLink = () => {
     if (!lesson_url) return null;
 
@@ -46,12 +53,6 @@ const FileRenderer = ({ url }: { url: any }) => {
 
   const renderFileContent = () => {
     if (!lesson_file) return null;
-
-    const { showImage } = useImage();
-    const [showVideo, setShowVideo] = useState(false);
-    const player = useVideoPlayer(lesson_file, (player) => {
-      player.loop = true;
-    });
 
     const fileName = lesson_file.split("/").pop();
     const fileType = lesson_file.split(".").pop()?.toLowerCase();

@@ -28,7 +28,7 @@ const TimerHeader = () => {
   );
 };
 
-export default () => {
+export default function AssessmentLayout() {
   return (
     <Stack
       screenOptions={{
@@ -53,4 +53,4 @@ export default () => {
       />
     </Stack>
   );
-};
+}

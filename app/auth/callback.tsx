@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { useRouter } from "expo-router";
-import { View, ActivityIndicator } from "react-native";
+import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function AuthCallback() {
     }, 100);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

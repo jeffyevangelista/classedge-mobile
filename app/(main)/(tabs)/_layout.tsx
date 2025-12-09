@@ -17,8 +17,8 @@ import {
   HomeIcon as HomeSolid,
 } from "react-native-heroicons/solid";
 
-export default () => {
-  const { data, isLoading, isError, error } = useNotificationCount();
+export default function TabsLayout() {
+  const { data } = useNotificationCount();
   const unreadCount = data?.count;
 
   return (
@@ -128,4 +128,4 @@ export default () => {
       />
     </Tabs>
   );
-};
+}

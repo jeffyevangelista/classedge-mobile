@@ -72,6 +72,7 @@ export default function RootLayout() {
   // Run once on app mount
   useEffect(() => {
     loadSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Hide splash when ready

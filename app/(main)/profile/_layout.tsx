@@ -2,7 +2,7 @@ import BackButton from "@/components/back-button";
 import LogoutButton from "@/features/auth/components/LogoutButton";
 import { Stack } from "expo-router";
 
-export default () => {
+export default function ProfileLayout() {
   return (
     <Stack
       screenOptions={{
@@ -41,4 +41,4 @@ export default () => {
       />
     </Stack>
   );
-};
+}
